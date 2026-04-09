@@ -124,14 +124,17 @@
         ? image
         : '/assets/images/noticias/' + image;
 
+      // Clase CSS que oculta el ::before placeholder via sections.css
+      imgDiv.classList.add('has-image');
+
       var img = document.createElement('img');
       img.src      = src;
       img.alt      = title;
       img.loading  = 'lazy';
-      // Cubre el contenedor completamente, tapando el ::before placeholder del CSS
+      // z-index:1 garantiza estar por encima del ::before (z-index:0)
       img.style.cssText =
         'position:absolute;inset:0;width:100%;height:100%;' +
-        'object-fit:cover;display:block;';
+        'object-fit:cover;display:block;z-index:1;';
       imgDiv.appendChild(img);
     }
 
@@ -181,6 +184,7 @@
 
     /* 2. Listar archivos .md en content/noticias/ via GitHub API */
     fetch(API_DIR, {
+      mode: 'cors',
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     })
     .then(function (res) {
@@ -201,7 +205,7 @@
 
       /* 3. Descargar todos los .md en paralelo */
       var promises = mdFiles.map(function (f) {
-        return fetch(RAW_BASE + '/' + encodeURIComponent(f.name))
+        return fetch(RAW_BASE + '/' + encodeURIComponent(f.name), { mode: 'cors' })
           .then(function (r) { return r.ok ? r.text() : null; })
           .then(function (text) {
             if (!text) return null;
@@ -209,7 +213,10 @@
             parsed.filename = f.name;
             return parsed;
           })
-          .catch(function () { return null; });
+          .catch(function (err) {
+            console.warn('[AFNEMO news] No se pudo descargar ' + f.name + ':', err);
+            return null;
+          });
       });
 
       return Promise.all(promises);

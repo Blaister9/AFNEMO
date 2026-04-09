@@ -471,6 +471,11 @@
   justify-content: center;
   color: rgba(44, 24, 16, 0.2);
   font-size: 0.85rem;
+  z-index: 0;
+}
+/* Ocultar placeholder cuando la tarjeta tiene imagen real */
+.news-card-img.has-image::before {
+  display: none;
 }
 .news-card-body {
   padding: 1.5rem;
