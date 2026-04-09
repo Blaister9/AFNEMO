@@ -243,43 +243,8 @@
     </div>
     <a href="#">Ver todas las noticias →</a>
   </div>
-  <div class="news-grid">
-    <div class="news-card">
-      <div class="news-card-img"></div>
-      <div class="news-card-body">
-        <div class="news-card-tag">Evento destacado</div>
-        <h3>Gran Encuentro Nacional de Comunidades Afrocolombianas 2026</h3>
-        <p>Más de 500 líderes comunitarios se reunirán en Cali para discutir los avances y desafíos en materia de política pública étnica.</p>
-        <div class="news-card-meta">
-          <span>15 Mar 2026</span>
-          <span>•</span>
-          <span>Cali, Valle del Cauca</span>
-        </div>
-      </div>
-    </div>
-    <div class="news-card">
-      <div class="news-card-img"></div>
-      <div class="news-card-body">
-        <div class="news-card-tag">Programa</div>
-        <h3>Graduación de la 5ª cohorte del Semillero de Líderes</h3>
-        <p>120 jóvenes completaron su formación en liderazgo comunitario y derechos humanos.</p>
-        <div class="news-card-meta">
-          <span>28 Feb 2026</span>
-        </div>
-      </div>
-    </div>
-    <div class="news-card">
-      <div class="news-card-img"></div>
-      <div class="news-card-body">
-        <div class="news-card-tag">Alianza</div>
-        <h3>Nueva alianza con la Cooperación Internacional</h3>
-        <p>Firmamos convenio para fortalecer el emprendimiento afro en 3 departamentos.</p>
-        <div class="news-card-meta">
-          <span>10 Feb 2026</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Tarjetas renderizadas dinámicamente por assets/js/news.js -->
+  <div id="noticias-container" class="news-grid" aria-live="polite" aria-label="Últimas noticias de AFNEMO"></div>
 </section>
 <!-- ==========================================
      TEAM
@@ -439,6 +404,7 @@
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/animations.js"></script>
 <script src="assets/js/arcgis.js"></script>
+<script src="assets/js/news.js" defer></script>
 
 <!-- Netlify Identity -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

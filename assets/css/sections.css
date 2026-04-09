@@ -1365,3 +1365,33 @@ footer {
   cursor: not-allowed;
   transform: none;
 }
+
+/* ─── SKELETON LOADER ─────────────────────────────────────────────────────
+   Usado por assets/js/news.js mientras carga noticias desde GitHub API
+   ─────────────────────────────────────────────────────────────────────── */
+@keyframes news-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.news-skeleton-block,
+.news-skeleton-line {
+  background: linear-gradient(
+    90deg,
+    rgba(44, 24, 16, 0.06) 25%,
+    rgba(44, 24, 16, 0.13) 50%,
+    rgba(44, 24, 16, 0.06) 75%
+  );
+  background-size: 1200px 100%;
+  animation: news-shimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* Ocultar el pseudo-elemento placeholder durante skeleton */
+.news-skeleton .news-card-img::before {
+  display: none;
+}
+
+.news-skeleton-line {
+  display: block;
+}
