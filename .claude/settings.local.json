@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://api.github.com/repos/Blaister9/AFNEMO/contents/content/noticias\")",
+      "Bash(python -c \"import sys,json; files=[f['name'] for f in json.load\\(sys.stdin\\) if f['type']=='file']; [print\\(f\\) for f in files]\")",
+      "Bash(curl -s https://raw.githubusercontent.com/Blaister9/AFNEMO/main/content/noticias/__TRACKED_VAR__)",
+      "Bash(node -e ':*)"
+    ]
+  }
+}
