@@ -1,263 +1,91 @@
-/* ============================================
-   AFNEMO – news.js
-   Carga dinámica de noticias desde GitHub API.
-   Parsea frontmatter manualmente (sin librerías).
-   ============================================ */
-
+/* Noticias de la misma versión publicada: nunca consulta main ni GitHub. */
 (function () {
   'use strict';
-
-  /* ── Configuración ───────────────────────────────────────────────────── */
-  var GITHUB_OWNER  = 'Blaister9';
-  var GITHUB_REPO   = 'AFNEMO';
-  var GITHUB_BRANCH = 'main';
-  var NOTICIAS_PATH = 'content/noticias';
-  var MAX_NOTICIAS  = 3;
-
-  var API_DIR  = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO
-               + '/contents/' + NOTICIAS_PATH;
-  var RAW_BASE = 'https://raw.githubusercontent.com/' + GITHUB_OWNER + '/' + GITHUB_REPO
-               + '/' + GITHUB_BRANCH + '/' + NOTICIAS_PATH;
-
-  /* ── Skeleton placeholder ────────────────────────────────────────────── */
-  function renderSkeletons(container) {
-    container.innerHTML = '';
-    for (var i = 0; i < MAX_NOTICIAS; i++) {
-      var card = document.createElement('div');
-      card.className = 'news-card news-skeleton';
-      card.setAttribute('aria-hidden', 'true');
-      card.innerHTML =
-        '<div class="news-card-img news-skeleton-block"></div>' +
-        '<div class="news-card-body">' +
-          '<div class="news-skeleton-line" style="width:35%;height:11px;margin-bottom:.85rem"></div>' +
-          '<div class="news-skeleton-line" style="width:92%;height:19px;margin-bottom:.4rem"></div>' +
-          '<div class="news-skeleton-line" style="width:68%;height:19px;margin-bottom:.85rem"></div>' +
-          '<div class="news-skeleton-line" style="width:100%;height:13px;margin-bottom:.35rem"></div>' +
-          '<div class="news-skeleton-line" style="width:80%;height:13px;margin-bottom:1.1rem"></div>' +
-          '<div class="news-skeleton-line" style="width:28%;height:11px"></div>' +
-        '</div>';
-      container.appendChild(card);
+  var container = document.getElementById('noticias-container');
+  if (!container) return;
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+  function message(title, description, retry) {
+    container.replaceChildren();
+    var box = element('div', 'news-state');
+    box.append(element('h3', '', title), element('p', '', description));
+    if (retry) {
+      var button = element('button', 'btn-primary', 'Reintentar');
+      button.type = 'button';
+      button.addEventListener('click', load);
+      box.appendChild(button);
+    }
+    container.appendChild(box);
+  }
+  function validRecord(record) {
+    return record && typeof record.title === 'string' && typeof record.excerpt === 'string' &&
+      /^\/noticias\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(record.url) &&
+      typeof record.date === 'string' && !Number.isNaN(Date.parse(record.date));
+  }
+  function card(record) {
+    var article = element('article', 'news-card');
+    if (record.image && /^\/assets\/images\/[a-zA-Z0-9_./-]+\.(png|jpe?g|webp|avif)$/i.test(record.image) && !record.image.includes('..')) {
+      var figure = element('figure', 'news-card-img has-image');
+      var img = element('img');
+      img.src = record.image;
+      img.alt = record.image_alt || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      if (Number.isInteger(record.image_width) && Number.isInteger(record.image_height)) {
+        img.width = record.image_width;
+        img.height = record.image_height;
+      }
+      figure.appendChild(img);
+      if (record.image_credit) figure.appendChild(element('figcaption', 'news-image-credit', record.image_credit));
+      article.appendChild(figure);
+    }
+    var body = element('div', 'news-card-body');
+    body.appendChild(element('div', 'news-card-tag', record.category || 'Noticias'));
+    var heading = element('h3');
+    var link = element('a', '', record.title);
+    link.href = record.url;
+    heading.appendChild(link);
+    body.append(heading, element('p', '', record.excerpt));
+    var date = element('time');
+    date.dateTime = record.date;
+    date.textContent = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(record.date.slice(0, 10) + 'T12:00:00Z'));
+    var meta = element('div', 'news-card-meta');
+    meta.appendChild(date);
+    var read = element('a', 'news-read-link', 'Leer noticia →');
+    read.href = record.url;
+    read.setAttribute('aria-label', 'Leer noticia: ' + record.title);
+    body.append(meta, read);
+    article.appendChild(body);
+    return article;
+  }
+  async function load() {
+    var retrying = document.activeElement && container.contains(document.activeElement);
+    container.setAttribute('aria-busy', 'true');
+    message('Cargando noticias…', 'Consultando las publicaciones de AFNEMO.');
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 12000);
+    try {
+      var response = await fetch('/data/noticias.json', { signal: controller.signal, cache: 'no-cache', headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error('Noticias no disponibles');
+      var records = await response.json();
+      if (!Array.isArray(records) || !records.every(validRecord)) throw new Error('Formato de noticias no válido');
+      if (!records.length) message('Aún no hay noticias publicadas', 'Pronto compartiremos novedades de la asociación. Puedes explorar las experiencias documentadas.');
+      else container.replaceChildren.apply(container, records.slice(0, 3).map(card));
+    } catch {
+      message('No pudimos cargar las noticias', 'Puedes volver a intentarlo o consultar el listado completo de noticias.', true);
+    } finally {
+      clearTimeout(timeout);
+      container.setAttribute('aria-busy', 'false');
+      if (retrying) {
+        var focusTarget = container.querySelector('a, button') || container;
+        if (focusTarget === container) container.tabIndex = -1;
+        focusTarget.focus();
+      }
     }
   }
-
-  /* ── Parseo manual de frontmatter YAML ──────────────────────────────── */
-  // Soporta: strings (con o sin comillas), booleans, fechas ISO.
-  // No soporta: arrays, objetos anidados (no necesarios aquí).
-  function parseFrontmatter(raw) {
-    var fenceRe = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
-    var m = raw.match(fenceRe);
-    if (!m) return { meta: {}, body: raw.trim() };
-
-    var meta = {};
-    var lines = m[1].split('\n');
-
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      var ci = line.indexOf(':');
-      if (ci === -1) continue;
-
-      var key = line.slice(0, ci).trim();
-      var val = line.slice(ci + 1).trim();
-
-      // Eliminar comillas dobles o simples envolventes
-      if (
-        (val.charAt(0) === '"'  && val.charAt(val.length - 1) === '"') ||
-        (val.charAt(0) === "'"  && val.charAt(val.length - 1) === "'")
-      ) {
-        val = val.slice(1, -1);
-      }
-
-      // Booleanos
-      if (val === 'true')       val = true;
-      else if (val === 'false') val = false;
-
-      if (key) meta[key] = val;
-    }
-
-    var body = raw.slice(m[0].length).trim();
-    return { meta: meta, body: body };
-  }
-
-  /* ── Formateador de fecha ────────────────────────────────────────────── */
-  function formatDate(dateStr) {
-    if (!dateStr) return '';
-    var d = new Date(dateStr);
-    if (isNaN(d.getTime())) return String(dateStr);
-    return d.toLocaleDateString('es-CO', {
-      day:   'numeric',
-      month: 'short',
-      year:  'numeric'
-    });
-  }
-
-  /* ── Escape HTML para evitar XSS ────────────────────────────────────── */
-  function escHtml(str) {
-    if (typeof str !== 'string') return '';
-    return str
-      .replace(/&/g,  '&amp;')
-      .replace(/</g,  '&lt;')
-      .replace(/>/g,  '&gt;')
-      .replace(/"/g,  '&quot;')
-      .replace(/'/g,  '&#39;');
-  }
-
-  /* ── Construye una tarjeta de noticia ───────────────────────────────── */
-  function buildCard(noticia, index) {
-    var meta    = noticia.meta;
-    var title   = meta.title    || 'Sin título';
-    var dateStr = meta.date     || '';
-    var excerpt = meta.excerpt  || noticia.body.slice(0, 180) || '';
-    var image   = meta.image    || '';
-    // 'tag' es campo opcional; si no existe se usa 'Noticias'
-    var cardTag = meta.tag || meta.category || 'Noticias';
-
-    var card = document.createElement('div');
-    card.className = 'news-card';
-
-    /* — Imagen — */
-    var imgDiv = document.createElement('div');
-    imgDiv.className = 'news-card-img';
-
-    if (image) {
-      // Si la ruta no empieza con '/' se asume relativa a /assets/images/noticias/
-      var src = image.charAt(0) === '/'
-        ? image
-        : '/assets/images/noticias/' + image;
-
-      // Clase CSS que oculta el ::before placeholder via sections.css
-      imgDiv.classList.add('has-image');
-
-      var img = document.createElement('img');
-      img.src      = src;
-      img.alt      = title;
-      img.loading  = 'lazy';
-      // z-index:1 garantiza estar por encima del ::before (z-index:0)
-      img.style.cssText =
-        'position:absolute;inset:0;width:100%;height:100%;' +
-        'object-fit:cover;display:block;z-index:1;';
-      imgDiv.appendChild(img);
-    }
-
-    /* — Cuerpo de la tarjeta — */
-    var bodyDiv = document.createElement('div');
-    bodyDiv.className = 'news-card-body';
-
-    var dateLabel = formatDate(dateStr);
-
-    bodyDiv.innerHTML =
-      '<div class="news-card-tag">' + escHtml(cardTag) + '</div>' +
-      '<h3>' + escHtml(title) + '</h3>' +
-      (excerpt ? '<p>' + escHtml(excerpt) + '</p>' : '') +
-      '<div class="news-card-meta">' +
-        (dateLabel ? '<span>' + escHtml(dateLabel) + '</span>' : '') +
-      '</div>';
-
-    card.appendChild(imgDiv);
-    card.appendChild(bodyDiv);
-
-    /* — Animación de entrada con stagger — */
-    card.style.opacity   = '0';
-    card.style.transform = 'translateY(22px)';
-    setTimeout(function () {
-      card.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
-      card.style.opacity    = '1';
-      card.style.transform  = 'translateY(0)';
-    }, index * 80);
-
-    return card;
-  }
-
-  /* ── Oculta la sección si no hay noticias / hay error ───────────────── */
-  function hideSectionNews(container) {
-    container.innerHTML = '';
-    var section = container.closest('section.news');
-    if (section) section.style.display = 'none';
-  }
-
-  /* ── Lógica principal ────────────────────────────────────────────────── */
-  function loadNoticias() {
-    var container = document.getElementById('noticias-container');
-    if (!container) return;
-
-    /* 1. Mostrar skeletons mientras carga */
-    renderSkeletons(container);
-
-    /* 2. Listar archivos .md en content/noticias/ via GitHub API */
-    fetch(API_DIR, {
-      mode: 'cors',
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
-    })
-    .then(function (res) {
-      if (!res.ok) throw new Error('GitHub API error ' + res.status);
-      return res.json();
-    })
-    .then(function (files) {
-      if (!Array.isArray(files)) throw new Error('Unexpected API response');
-
-      var mdFiles = files.filter(function (f) {
-        return f.type === 'file' && f.name.slice(-3) === '.md';
-      });
-
-      if (!mdFiles.length) {
-        hideSectionNews(container);
-        return Promise.resolve([]);
-      }
-
-      /* 3. Descargar todos los .md en paralelo */
-      var promises = mdFiles.map(function (f) {
-        return fetch(RAW_BASE + '/' + encodeURIComponent(f.name), { mode: 'cors' })
-          .then(function (r) { return r.ok ? r.text() : null; })
-          .then(function (text) {
-            if (!text) return null;
-            var parsed = parseFrontmatter(text);
-            parsed.filename = f.name;
-            return parsed;
-          })
-          .catch(function (err) {
-            console.warn('[AFNEMO news] No se pudo descargar ' + f.name + ':', err);
-            return null;
-          });
-      });
-
-      return Promise.all(promises);
-    })
-    .then(function (results) {
-      if (!results || !results.length) return;
-
-      /* 4. Filtrar published: true y ordenar por fecha descendente */
-      var noticias = results
-        .filter(function (n) {
-          return n && n.meta && n.meta.published === true;
-        })
-        .sort(function (a, b) {
-          return new Date(b.meta.date) - new Date(a.meta.date);
-        })
-        .slice(0, MAX_NOTICIAS);
-
-      /* 5. Renderizar o esconder */
-      container.innerHTML = '';
-
-      if (!noticias.length) {
-        hideSectionNews(container);
-        return;
-      }
-
-      noticias.forEach(function (noticia, i) {
-        container.appendChild(buildCard(noticia, i));
-      });
-    })
-    .catch(function () {
-      /* Error silencioso: ocultar la sección de noticias */
-      hideSectionNews(container);
-    });
-  }
-
-  /* ── Arrancar cuando el DOM esté listo ──────────────────────────────── */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadNoticias);
-  } else {
-    // Con defer el DOM ya está disponible al ejecutarse
-    loadNoticias();
-  }
-
+  load();
 })();

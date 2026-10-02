@@ -1148,10 +1148,11 @@ footer {
   box-shadow: 0 10px 40px rgba(44, 24, 16, 0.08);
   background: white;
 }
-.arcgis-map-wrapper arcgis-embedded-map {
+.arcgis-map-wrapper iframe {
   display: block;
   width: 100%;
   height: 600px;
+  border: 0;
 }
 
 /* ─── CHATBOT WIDGET ─── */
@@ -1400,3 +1401,56 @@ footer {
 .news-skeleton-line {
   display: block;
 }
+
+/* Readable content and completed routes, using the existing AFNEMO palette. */
+.about-hero-strip .strip-sub, .about-origen-left p, .neftali-dates,
+.mv-card p, .mv-obj-item, .programs-header p, .program-card p,
+.footer-brand p, .footer-col a, .footer-bottom, .footer-bottom a { color: #c6bfaf; }
+.mv-card.mision .mv-label { color: #f5a17d; }
+.mv-card.vision .mv-label { color: #80cfa3; }
+.news-card-body p, .news-card-meta, .team-header p, .arcgis-section-header p,
+.newsletter p { color: #655344; }
+.program-card { cursor: default; }
+.program-link { line-height: 1.65; }
+.programs-more { max-width: 900px; margin: 2.5rem auto 0; text-align: center; }
+.legacy-programs { margin-top: 2rem; padding: 1.5rem; border: 1px solid #655344; border-radius: 12px; text-align: left; color: var(--cream); line-height: 1.7; }
+.legacy-programs summary { cursor: pointer; font-weight: 600; }
+.legacy-programs p { margin: 1rem 0; }
+.legacy-programs a { color: var(--gold-light); }
+.cta-content .service-note { font-size: .9rem; margin: 1.5rem 0 0; color: var(--cream); }
+.team-header { margin-bottom: 0; max-width: 750px; }
+.team-header p + p { margin-top: 1rem; }
+.arcgis-section-header p { max-width: 780px; line-height: 1.7; }
+.map-help { margin: 1rem 0 2.5rem; line-height: 1.7; }
+.map-help a, .arcgis-section-header a, .territory-links a, .contact-links a { color: #81300f; }
+.territory-stories { padding: 2.5rem; background: #e6dac1; border-radius: 16px; scroll-margin-top: 7rem; }
+.territory-stories h3, .newsletter h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 1rem; }
+.territory-stories p { max-width: 780px; line-height: 1.75; }
+.territory-links { display: flex; gap: 1rem 2rem; flex-wrap: wrap; margin-top: 1.5rem; }
+.territory-links a, .contact-links a { font-weight: 600; padding: .5rem 0; }
+.contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem 2rem; margin-bottom: 1.5rem; }
+.newsletter p { line-height: 1.75; }
+.newsletter .service-note { font-size: .9rem; }
+.footer-bottom { gap: 1.5rem; flex-wrap: wrap; padding-bottom: 4rem; }
+.footer-brand-logo { flex-wrap: wrap; }
+@media (max-width: 768px) {
+ .programs, .news, .team, .cta-banner { padding: 4rem 1.25rem; }
+ .news-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-bottom: 2rem; }
+ .programs-header { margin-bottom: 2rem; }
+ .program-card { padding: 1.7rem; }
+ .territory-stories { padding: 1.5rem; }
+ .arcgis-map-wrapper iframe { height: 420px; }
+ .newsletter, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+ .mv-card, .about-neftali { padding: 1.5rem; }
+ .about-hero-strip { padding: 4rem 1.25rem; }
+ .about-hero-strip .strip-sub { margin-bottom: 1.5rem; }
+}
+/* Home news: a single archival edition should remain comfortably readable. */
+.news-card:only-child { grid-column: 1 / -1; max-width: 780px; }
+.news-card-body h3 a { color: var(--deep-brown); text-decoration: none; }
+.news-card-body h3 a:hover { text-decoration: underline; }
+.news-read-link { display: inline-block; color: #81300f; font-weight: 600; margin-top: 1rem; padding-block: .4rem; }
+.news-state { grid-column: 1 / -1; padding: 1.5rem; line-height: 1.7; border: 1px solid #bdae91; border-radius: 12px; }
+.news-state p { margin: .6rem 0 1rem; }
+.news-card-img.has-image img { width: 100%; height: 100%; object-fit: cover; }
+.news-image-credit { position: absolute; left: 0; right: 0; bottom: 0; padding: .5rem; background: rgba(9,12,7,.85); color: var(--cream); font-size: .8rem; }

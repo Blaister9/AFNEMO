@@ -5,6 +5,12 @@ backend:
 media_folder: "assets/images/noticias"
 public_folder: "/assets/images/noticias"
 locale: 'es'
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+site_url: "https://afnemo.co"
+display_url: "https://afnemo.co"
 
 collections:
   - name: "noticias"
@@ -15,7 +21,56 @@ collections:
     fields:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Fecha", name: "date", widget: "datetime"}
+      - {label: "Fecha del evento (solo si consta)", name: "event_date", widget: "datetime", required: false}
+      - {label: "Actualización (si corresponde)", name: "updated_at", widget: "datetime", required: false}
       - {label: "Resumen", name: "excerpt", widget: "text"}
-      - {label: "Imagen principal", name: "image", widget: "image", required: false}
+      - {label: "Categoría", name: "category", widget: "string", default: "Noticias", required: false}
+      - {label: "Fuente documental", name: "source", widget: "text", required: false}
+      - {label: "Fecha de la fuente (AAAA, AAAA-MM o AAAA-MM-DD)", name: "source_date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}){0,2}$', "Respeta la precisión que consta en la fuente"]}
+      - {label: "Imagen principal con permiso", name: "image", widget: "image", required: false, hint: "Subir incorpora el archivo al repositorio público. NO subas fotos con permisos pendientes ni datos personales. Usa nombres de archivo sin espacios ni tildes."}
+      - {label: "Permiso de publicación de imagen comprobado", name: "image_authorized", widget: "boolean", default: false, hint: "Solo se publica la imagen con esta confirmación, texto alternativo y crédito. Borrador NO significa privado."}
+      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false}
+      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false}
       - {label: "Contenido", name: "body", widget: "markdown"}
-      - {label: "Publicado", name: "published", widget: "boolean", default: true}
+      - {label: "Publicado", name: "published", widget: "boolean", default: false, hint: "Los borradores no entran al sitio generado, pero siguen en el repositorio público y su historial. Nunca incluyas material privado o pendiente de autorización. Las imágenes del cuerpo no se publican: usa los campos de imagen autorizada."}
+
+  - name: "experiencias"
+    label: "Experiencias documentadas"
+    folder: "content/experiencias"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    summary: "{{title}} — {{status}}"
+    fields:
+      - {label: "Identificador permanente", name: "id", widget: "string", hint: "Se usa en el enlace público. No cambiar después de publicar.", pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Usa minúsculas, números y guiones"]}
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Resumen", name: "excerpt", widget: "text"}
+      - {label: "Iniciativa", name: "initiative", widget: "string"}
+      - {label: "Territorio documentado", name: "territory", widget: "string", hint: "Solo región, ciudad o localidad documentada. No direcciones, coordenadas ni lugares de atención sin autorización."}
+      - {label: "Precisión pública", name: "public_precision", widget: "select", options: [{label: "Sin ubicación pública", value: "none"}, {label: "Región", value: "region"}, {label: "Ciudad", value: "city"}, {label: "Localidad", value: "locality"}], default: "none"}
+      - {label: "Fecha documentada (AAAA, AAAA-MM o AAAA-MM-DD)", name: "event_date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}){0,2}$', "No inventes el día o mes"]}
+      - label: "Hitos documentados"
+        name: "milestones"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Hito", name: "label", widget: "string"}
+          - {label: "Fecha (AAAA, AAAA-MM o AAAA-MM-DD)", name: "date", widget: "string", pattern: ['^\d{4}(-\d{2}){0,2}$', "No inventes el día o mes"]}
+      - {label: "Relato", name: "body", widget: "markdown", hint: "Distingue la experiencia histórica de su operación actual. Las imágenes en el cuerpo no se publican."}
+      - {label: "Fuente documental", name: "source", widget: "text"}
+      - {label: "Revisión documental realizada", name: "reviewed", widget: "boolean", default: false, hint: "No confirma la operación actual de la iniciativa. Es obligatoria para publicar."}
+      - {label: "Fecha de revisión documental", name: "reviewed_at", widget: "datetime", format: "YYYY-MM-DD", time_format: false}
+      - {label: "Estado editorial", name: "status", widget: "select", options: [{label: "Borrador", value: "draft"}, {label: "Publicado", value: "published"}], default: "draft", hint: "Borrador NO significa privado: el archivo y su historial siguen en el repositorio público."}
+      - label: "Materiales públicos relacionados"
+        name: "materials"
+        widget: "list"
+        required: false
+        hint: "Solo enlaces públicos HTTPS o fichas locales. No subas documentos originales, ZIP ni materiales sin permiso."
+        fields:
+          - {label: "Título", name: "label", widget: "string"}
+          - {label: "Enlace", name: "url", widget: "string"}
+          - {label: "Crédito", name: "credit", widget: "string", required: false}
+      - {label: "Imagen con permiso", name: "image", widget: "image", required: false, hint: "NO subas fotos con permisos pendientes: el repositorio es público. Nombres sin espacios ni tildes."}
+      - {label: "Permiso de publicación de imagen comprobado", name: "image_authorized", widget: "boolean", default: false}
+      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false}
+      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false}
