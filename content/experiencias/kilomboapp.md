@@ -9,13 +9,20 @@ reviewed_at: "2026-10-02"
 source: "Documento institucional pagina a 19 de febrero.docx, apartado Innovación para la conservación, párrafos no vacíos 106–107, y sección Nuestras iniciativas (publicación indicada: 21 de agosto de 2024), párrafos 129–135; compilación: 19 de febrero de 2025."
 status: published
 public_precision: none
+materials:
+  - label: "Kilombo App, la apuesta por digitalizar la medicina ancestral (22 de julio de 2023)"
+    url: "https://www.elespectador.com/responsabilidad-social/impacto-mujer/kilombo-app-la-apuesta-por-digitalizar-la-medicina-ancestral/"
+    credit: "María Paula Ardila / El Espectador. Enlace incluido en el documento institucional."
+  - label: "Kilombo app: la plataforma para rescatar la medicina ancestral (14 de julio de 2023)"
+    url: "https://www.radionica.rocks/mundo-geek/tecnologia/kilombo-app-la-plataforma-para-rescatar-la-medicina-ancestral"
+    credit: "Radiónica. Enlace incluido en el documento institucional; dirección actualizada del mismo artículo."
 ---
 
 ## Memoria en un medio digital
 
 Los materiales institucionales describen KilomboApp como una herramienta digital vinculada al Kilombo Yumma que documenta prácticas y saberes ancestrales para favorecer su transmisión a otras generaciones.
 
-Esta iniciativa permite reconocer una relación entre los procesos comunitarios y las posibilidades de la documentación digital. La ficha recoge ese propósito histórico sin atribuirle resultados clínicos o ambientales que el material no demuestra.
+Esta iniciativa reúne procesos comunitarios y documentación digital. El artículo institucional de noviembre de 2024 la relaciona con el propósito de conservar la memoria de esos conocimientos y acercarlos a otras generaciones.
 
 ## Una experiencia digital
 
@@ -27,4 +34,4 @@ El documento no establece una fecha de lanzamiento. La disponibilidad actual de 
 
 Síntesis de los apartados «Innovación para la conservación» y «Nuestras iniciativas» del Word institucional compilado el 19 de febrero de 2025. Revisión editorial: 2 de octubre de 2026.
 
-No se incorporan fotografías, capturas de la aplicación ni otros materiales cuya autorización de publicación esté pendiente.
+[Leer el artículo de archivo sobre saberes ancestrales y biodiversidad](/noticias/2024-11-26-saberes-ancestrales-biodiversidad/).

@@ -14,28 +14,33 @@ display_url: "https://afnemo.co"
 
 collections:
   - name: "noticias"
-    label: "Noticias"
+    label: "Noticias y memoria"
+    label_singular: "Noticia"
+    description: "Comparte acontecimientos y publicaciones con su fecha y fuente. Empieza por título, resumen y relato; revisa la vista previa antes de mostrarlo en el sitio. Guía: /admin/guia.html"
     folder: "content/noticias"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Fecha", name: "date", widget: "datetime"}
-      - {label: "Fecha del evento (solo si consta)", name: "event_date", widget: "datetime", required: false}
-      - {label: "Actualización (si corresponde)", name: "updated_at", widget: "datetime", required: false}
-      - {label: "Resumen", name: "excerpt", widget: "text"}
+      - {label: "Título", name: "title", widget: "string", hint: "Cuenta de qué trata con una frase clara. Evita títulos genéricos como Nueva noticia."}
+      - {label: "Fecha de publicación", name: "date", widget: "datetime", hint: "Conserva la fecha original si estás incorporando una publicación histórica. No es necesariamente la fecha del evento."}
+      - {label: "Es una publicación histórica", name: "historical", widget: "boolean", default: false, hint: "Actívalo para conservar la fecha de publicación original; Actualización identifica la nueva edición."}
+      - {label: "Fecha del evento (solo si consta)", name: "event_date", widget: "datetime", required: false, hint: "Cuándo ocurrió el acontecimiento. Déjala vacía si solo conoces la fecha de la publicación."}
+      - {label: "Actualización (si corresponde)", name: "updated_at", widget: "datetime", required: false, hint: "Fecha de una nueva edición o revisión. No reemplaza la fecha histórica."}
+      - {label: "Resumen", name: "excerpt", widget: "text", hint: "Dos o tres frases para entender la noticia antes de abrirla. Evita repetir el título."}
       - {label: "Categoría", name: "category", widget: "string", default: "Noticias", required: false}
-      - {label: "Fuente documental", name: "source", widget: "text", required: false}
+      - {label: "Fuente documental", name: "source", widget: "text", required: false, hint: "Identifica el documento, artículo o autor. Si usas una fuente ajena, atribúyela y añade su enlace en el relato."}
       - {label: "Fecha de la fuente (AAAA, AAAA-MM o AAAA-MM-DD)", name: "source_date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}){0,2}$', "Respeta la precisión que consta en la fuente"]}
       - {label: "Imagen principal con permiso", name: "image", widget: "image", required: false, hint: "Subir incorpora el archivo al repositorio público. NO subas fotos con permisos pendientes ni datos personales. Usa nombres de archivo sin espacios ni tildes."}
       - {label: "Permiso de publicación de imagen comprobado", name: "image_authorized", widget: "boolean", default: false, hint: "Solo se publica la imagen con esta confirmación, texto alternativo y crédito. Borrador NO significa privado."}
-      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false}
-      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false}
-      - {label: "Contenido", name: "body", widget: "markdown"}
-      - {label: "Publicado", name: "published", widget: "boolean", default: false, hint: "Los borradores no entran al sitio generado, pero siguen en el repositorio público y su historial. Nunca incluyas material privado o pendiente de autorización. Las imágenes del cuerpo no se publican: usa los campos de imagen autorizada."}
+      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false, hint: "Describe la escena con información conocida. No adivines identidades, lugares o fechas."}
+      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false, hint: "Incluye la atribución acordada y cómo se comprobó el permiso. Es obligatorio cuando se muestra una imagen."}
+      - {label: "Relato de la noticia", name: "body", widget: "markdown", hint: "Usa subtítulos y párrafos cortos. Las imágenes del cuerpo no se publican: usa los campos de imagen autorizada."}
+      - {label: "Mostrar en el sitio", name: "published", widget: "boolean", default: false, hint: "Activa cuando la entrada esté revisada. Solo aparece después de guardar y generar una versión publicada. Desactivar NO vuelve privado el contenido: el repositorio y su historial son públicos."}
 
   - name: "experiencias"
-    label: "Experiencias documentadas"
+    label: "Iniciativas documentadas"
+    label_singular: "Ficha de iniciativa"
+    description: "Describe una iniciativa con su historia, fuente y territorio general. No uses esta colección para inventar una lista de videos: enlaza solo materiales identificados. Guía: /admin/guia.html"
     folder: "content/experiencias"
     create: true
     slug: "{{slug}}"
@@ -72,5 +77,20 @@ collections:
           - {label: "Crédito", name: "credit", widget: "string", required: false}
       - {label: "Imagen con permiso", name: "image", widget: "image", required: false, hint: "NO subas fotos con permisos pendientes: el repositorio es público. Nombres sin espacios ni tildes."}
       - {label: "Permiso de publicación de imagen comprobado", name: "image_authorized", widget: "boolean", default: false}
-      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false}
-      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false}
+      - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false, hint: "Describe la escena documentada sin inferir nombres, fechas o lugares."}
+      - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false, hint: "Atribución acordada y permiso comprobado. Obligatorio al mostrar la imagen."}
+
+  - name: "institucional"
+    label: "Asociación y trayectoria"
+    description: "Una sola página para ampliar origen, misión, objetivos y trayectoria. Distingue lo histórico de la información vigente. Guía: /admin/guia.html"
+    files:
+      - name: "asociacion"
+        label: "Sobre la asociación"
+        file: "content/institucional/asociacion.md"
+        fields:
+          - {label: "Título", name: "title", widget: "string"}
+          - {label: "Resumen", name: "excerpt", widget: "text", hint: "Una presentación breve de la asociación y del alcance de esta página."}
+          - {label: "Fuente documental", name: "source", widget: "text", hint: "Identifica el documento utilizado y su fecha. No lo adjuntes si contiene datos o imágenes pendientes."}
+          - {label: "Fecha de revisión documental", name: "reviewed_at", widget: "datetime", format: "YYYY-MM-DD", time_format: false, hint: "La revisión del documento no confirma cargos, contactos, servicios o alianzas actuales."}
+          - {label: "Contenido institucional", name: "body", widget: "markdown", hint: "Mantén una sola sección de trayectoria. No conviertas servicios históricos o voluntariado documentado en una oferta vigente sin confirmación."}
+          - {label: "Mostrar en el sitio", name: "published", widget: "boolean", default: false, hint: "Activa tras revisar fuentes y fechas. Guardar usa el editor existente configurado para main; no es una vista previa privada."}

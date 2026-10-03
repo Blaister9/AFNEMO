@@ -19,6 +19,8 @@ test('YAML real conserva multilineales, fechas y booleanos del CMS', () => {
   assert.equal(parsed.meta.date, '2026-04-09T10:51:00.000-05:00');
   assert.equal(parsed.meta.published, true);
   assert.match(normalizeContent(parsed, 'una-noticia.md', 'noticias').html, /<strong>documentado<\/strong>/);
+  assert.equal(normalizeContent(parsed, 'una-noticia.md', 'noticias').historical, false);
+  assert.equal(normalizeContent({ ...parsed, meta: { ...parsed.meta, historical: true } }, 'una-noticia.md', 'noticias').historical, true);
   assert.throws(() => parseContent('---\ntitle: uno\ntitle: dos\n---\ncuerpo'), /unique|duplic/i);
 });
 
@@ -72,11 +74,14 @@ test('Build genera rutas directas, feed propio, hashes y excluye originales, bor
     await fs.rm(root, { recursive: true, force: true });
   });
   for (const directory of ['assets/css', 'assets/js', 'admin']) await fs.cp(path.join(project, directory), path.join(root, directory), { recursive: true });
-  for (const directory of ['content/noticias', 'content/experiencias', 'assets/images/noticias', '.claude', 'docs']) await fs.mkdir(path.join(root, directory), { recursive: true });
+  for (const directory of ['content/noticias', 'content/experiencias', 'content/institucional', 'assets/images/noticias', '.claude', 'docs']) await fs.mkdir(path.join(root, directory), { recursive: true });
   await fs.writeFile(path.join(root, 'index.html'), '<html><head><link rel="stylesheet" href="assets/css/main.css"></head><body><nav id="mainNav"><a href="#about">Inicio</a></nav><main id="about">AFNEMO</main><footer><a href="#about">Inicio</a></footer><script src="assets/js/news.js"></script></body></html>');
   await fs.writeFile(path.join(root, '_redirects'), '/admin /admin/index.html 200');
   await fs.writeFile(path.join(root, 'CNAME'), 'afnemo.co');
   await fs.writeFile(path.join(root, 'content/noticias/publicada.md'), news);
+  const institutional = '---\ntitle: Historia de la asociación\nexcerpt: Memoria documentada\nsource: Archivo institucional\nreviewed_at: 2026-10-02\npublished: true\n---\n## Historia & comunidad\n\nRelato [documentado](/experiencias/).\n\n<script>alert(1)</script>';
+  await fs.writeFile(path.join(root, 'content/institucional/asociacion.md'), institutional);
+  await fs.appendFile(path.join(root, 'index.html'), '<a data-institutional href="/asociacion/">Trayectoria</a>');
   await fs.writeFile(path.join(root, 'content/noticias/draft.md'), news.replace('published: true', 'published: false\nimage: /assets/images/noticias/draft.jpg'));
   await fs.writeFile(path.join(root, 'content/noticias/sin-permiso.md'), news.replace('published: true', 'published: true\nimage: /assets/images/noticias/no-autorizada.jpg'));
   await fs.writeFile(path.join(root, 'assets/images/noticias/draft.jpg'), 'No publicar');
@@ -91,6 +96,14 @@ test('Build genera rutas directas, feed propio, hashes y excluye originales, bor
   const files = (await fs.readdir(path.join(root, 'dist'), { recursive: true })).map(file => file.replaceAll('\\', '/'));
   assert.ok(files.includes('noticias/publicada/index.html'));
   assert.ok(files.includes('experiencias/caso-documentado/index.html'));
+  assert.ok(files.includes('asociacion/index.html'));
+  assert.ok(files.includes('admin/guia.html'));
+  assert.ok(files.includes('admin/guia.css'));
+  const institutionPage = await fs.readFile(path.join(root, 'dist/asociacion/index.html'), 'utf8');
+  assert.match(institutionPage, /href="#seccion-1">Historia &amp; comunidad/);
+  assert.match(institutionPage, /<h2 id="seccion-1">Historia &amp; comunidad/);
+  assert.doesNotMatch(institutionPage, /<script>alert\(1\)/);
+  assert.match(await fs.readFile(path.join(root, 'dist/sitemap.xml'), 'utf8'), /https:\/\/afnemo.co\/asociacion\//);
   for (const prefix of ['content', '.claude', 'docs', 'fuentes.zip', 'noticias/draft', 'assets/images/noticias']) assert.equal(files.some(file => file === prefix || file.startsWith(prefix + '/')), false, prefix);
   assert.ok(files.some(file => /assets\/css\/main\.[a-f0-9]{12}\.css/.test(file)));
   assert.equal(files.includes('assets/css/main.css'), false);
@@ -102,18 +115,25 @@ test('Build genera rutas directas, feed propio, hashes y excluye originales, bor
   assert.ok(feed.every(record => !('html' in record) && !('published' in record)));
   const before = files.find(file => /assets\/css\/main\.[a-f0-9]{12}\.css/.test(file));
   await fs.appendFile(path.join(root, 'assets/css/main.css'), '\n/* nueva versión */');
+  await fs.writeFile(path.join(root, 'content/institucional/asociacion.md'), institutional.replace('published: true', 'published: false'));
   await build(root);
+  await assert.rejects(fs.access(path.join(root, 'dist/asociacion/index.html')));
+  assert.doesNotMatch(await fs.readFile(path.join(root, 'dist/index.html'), 'utf8'), /data-institutional/);
   const after = await fs.readdir(path.join(root, 'dist/assets/css'));
   assert.equal(after.includes(path.basename(before)), false, 'Cada cambio CSS cambia la URL pública');
 });
 
-test('Decap conserva git-gateway/main y campos compatibles con las dos colecciones', async () => {
+test('Decap conserva git-gateway/main y campos compatibles con las tres colecciones', async () => {
   const config = parseYaml(await fs.readFile(path.join(project, 'admin/config.yml'), 'utf8'));
   assert.equal(config.backend.name, 'git-gateway');
   assert.equal(config.backend.branch, 'main');
   assert.equal(config.slug.encoding, 'ascii');
   assert.equal(config.slug.clean_accents, true);
   assert.equal(config.collections.find(collection => collection.name === 'noticias').fields.find(field => field.name === 'published').default, false);
+  assert.equal(config.collections.find(collection => collection.name === 'noticias').fields.find(field => field.name === 'historical').default, false);
+  const institutional = config.collections.find(collection => collection.name === 'institucional').files[0];
+  assert.equal(institutional.file, 'content/institucional/asociacion.md');
+  for (const field of ['title', 'excerpt', 'source', 'reviewed_at', 'body', 'published']) assert.ok(institutional.fields.some(candidate => candidate.name === field));
   for (const field of ['id', 'source', 'reviewed_at', 'materials', 'milestones', 'public_precision', 'status']) assert.ok(config.collections.find(collection => collection.name === 'experiencias').fields.some(candidate => candidate.name === field));
   const preview = await fs.readFile(path.join(project, 'admin/preview.js'), 'utf8');
   assert.match(preview, /this\.props\.entry/);
@@ -124,15 +144,15 @@ test('Decap conserva git-gateway/main y campos compatibles con las dos coleccion
 test('Vista previa usa la entrada abierta y los cambios sin guardar, sin peticiones a main', async () => {
   const templates = {};
   const runtime = {
-    CMS: { registerPreviewTemplate: (name, template) => { templates[name] = template; } },
+    CMS: { registerPreviewTemplate: (name, template) => { templates[name] = template; }, registerPreviewStyle: () => {} },
     createClass: definition => definition,
     h: (tag, props, ...children) => ({ tag, props, children })
   };
   vm.runInNewContext(await fs.readFile(path.join(project, 'admin/preview.js'), 'utf8'), { window: runtime });
-  assert.deepEqual(Object.keys(templates).sort(), ['experiencias', 'noticias']);
+  assert.deepEqual(Object.keys(templates).sort(), ['asociacion', 'experiencias', 'institucional', 'noticias']);
   for (const name of Object.keys(templates)) {
     const current = { title: 'Edición de esta rama', excerpt: 'Resumen sin guardar', body: 'Relato en edición' };
-    const props = { entry: { getIn: keys => current[keys[1]] }, widgetFor: field => current[field] };
+    const props = { entry: { get: () => name, getIn: keys => current[keys[1]] }, widgetFor: field => current[field] };
     const first = JSON.stringify(templates[name].render.call({ props }));
     assert.match(first, /Edición de esta rama/);
     assert.match(first, /Relato en edición/);

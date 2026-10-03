@@ -1454,3 +1454,8 @@ footer {
 .news-state p { margin: .6rem 0 1rem; }
 .news-card-img.has-image img { width: 100%; height: 100%; object-fit: cover; }
 .news-image-credit { position: absolute; left: 0; right: 0; bottom: 0; padding: .5rem; background: rgba(9,12,7,.85); color: var(--cream); font-size: .8rem; }
+
+.about-full-story { max-width: 1300px; margin: 0 auto; padding: 0 4rem 3rem; }
+.history-link { display: inline-block; color: #81300f; font-weight: 600; margin: 1.5rem 0 .5rem; line-height: 1.7; }
+.news-card-meta { flex-wrap: wrap; gap: .3rem; }
+@media (max-width: 768px) { .about-full-story { padding: 0 1.5rem 2rem; } }

@@ -2,8 +2,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { loadCollection, inspectImage } from './content.mjs';
-import { createPageRenderer, newsList, newsDetail, experiencesList, experienceDetail } from './pages.mjs';
+import { loadCollection, loadInstitutional, inspectImage } from './content.mjs';
+import { createPageRenderer, newsList, newsDetail, experiencesList, experienceDetail, institutionalDetail } from './pages.mjs';
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Explicit public source list: no recursive repository copy, raw content or source documents.
@@ -11,7 +11,7 @@ const codeAssets = [
   'assets/css/main.css', 'assets/css/nav.css', 'assets/css/hero.css', 'assets/css/sections.css', 'assets/css/responsive.css', 'assets/css/content.css',
   'assets/js/nav.js', 'assets/js/animations.js', 'assets/js/news.js', 'assets/js/experiences.js'
 ];
-const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', '_redirects', 'CNAME'];
+const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
 const existingPublicImages = new Set(['/assets/images/hero-image.webp']);
 
 export async function build(root = sourceRoot) {
@@ -19,8 +19,9 @@ export async function build(root = sourceRoot) {
   const out = path.resolve(root, 'dist');
   if (path.dirname(out) !== root || path.basename(out) !== 'dist') throw new Error('Directorio de salida no válido');
   try { if ((await fs.lstat(out)).isSymbolicLink()) throw new Error('dist no debe ser un enlace simbólico'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
-  const index = await fs.readFile(path.join(root, 'index.html'), 'utf8');
-  const [news, experiences] = await Promise.all([loadCollection(root, 'noticias'), loadCollection(root, 'experiencias')]);
+  let index = await fs.readFile(path.join(root, 'index.html'), 'utf8');
+  const [news, experiences, institutional] = await Promise.all([loadCollection(root, 'noticias'), loadCollection(root, 'experiencias'), loadInstitutional(root)]);
+  if (!institutional) index = index.replace(/<a\b[^>]*data-institutional[^>]*>[\s\S]*?<\/a>/g, '');
   const imageCache = new Map();
   const readImage = async image => {
     if (imageCache.has(image)) return imageCache.get(image);
@@ -47,6 +48,7 @@ export async function build(root = sourceRoot) {
   ]);
   for (const record of news) pages.set(`noticias/${record.slug}/index.html`, page({ title: record.title, description: record.excerpt, url: record.url, content: newsDetail(record) }));
   for (const record of experiences) pages.set(`experiencias/${record.slug}/index.html`, page({ title: record.title, description: record.excerpt, url: record.url, content: experienceDetail(record) }));
+  if (institutional) pages.set('asociacion/index.html', page({ title: institutional.title, description: institutional.excerpt, url: institutional.url, content: institutionalDetail(institutional) }));
   const publicAssets = new Map();
   const versions = new Map();
   for (const asset of codeAssets) {
@@ -85,7 +87,7 @@ export async function build(root = sourceRoot) {
   await write('data/noticias.json', JSON.stringify(news.map(({ html, ...record }) => record), null, 2) + '\n');
   await write('data/experiencias.json', JSON.stringify(experiences.map(({ html, ...record }) => record), null, 2) + '\n');
   await write('robots.txt', 'User-agent: *\nDisallow: /admin/\nSitemap: https://afnemo.co/sitemap.xml\n');
-  const urls = ['/', '/noticias/', '/experiencias/', ...news.map(record => record.url), ...experiences.map(record => record.url)];
+  const urls = ['/', '/noticias/', '/experiencias/', ...(institutional ? [institutional.url] : []), ...news.map(record => record.url), ...experiences.map(record => record.url)];
   await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(url => `<url><loc>https://afnemo.co${url}</loc></url>`).join('')}</urlset>\n`);
   return { out, news: news.length, experiences: experiences.length, pages: pages.size, images: referencedImages.size };
 }

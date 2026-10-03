@@ -54,6 +54,7 @@
     date.dateTime = record.date;
     date.textContent = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(record.date.slice(0, 10) + 'T12:00:00Z'));
     var meta = element('div', 'news-card-meta');
+    meta.appendChild(document.createTextNode(record.historical ? 'Publicación original: ' : 'Publicación: '));
     meta.appendChild(date);
     var read = element('a', 'news-read-link', 'Leer noticia →');
     read.href = record.url;

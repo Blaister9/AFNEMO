@@ -8,6 +8,10 @@ reviewed: true
 reviewed_at: "2026-10-02"
 source: "Documento institucional pagina a 19 de febrero.docx, sección Museo del viernes negro, párrafos no vacíos 136–143; crónica de El AfroBogotano publicada el 18 de junio de 2024 y reproducida en los párrafos 50–58; compilación: 19 de febrero de 2025."
 status: published
+image: /assets/images/experiencias/museo-viernes-negro.webp
+image_authorized: true
+image_alt: "Grupo de personas posando en un interior, varias con vestidos azules y blancos, sombreros e instrumentos de percusión."
+image_credit: "Imagen suministrada por AFNEMO."
 public_precision: locality
 milestones:
   - label: "Publicación de la crónica de apertura; no es la fecha exacta del evento"
@@ -34,6 +38,6 @@ La localidad se presenta como contexto histórico. La sede, los horarios, las co
 
 Síntesis de «Nuestras iniciativas» y de la crónica de apertura incluida en el Word institucional, compilado el 19 de febrero de 2025. Revisión editorial: 2 de octubre de 2026.
 
-[Crónica citada por el documento: El AfroBogotano, 18 de junio de 2024](https://elafrobogotano.com.co/se-abrio-el-primer-museo-del-viernes-negro-en-colombia/).
+[Leer la noticia histórica de apertura y sus videos identificados](/noticias/2026-10-02-memoria-museo/).
 
-Las fotografías de la crónica y del archivo recibido no se publican en esta ficha mientras sus derechos y autorizaciones estén pendientes.
+[Crónica original: El AfroBogotano, 18 de junio de 2024](https://elafrobogotano.com.co/se-abrio-el-primer-museo-del-viernes-negro-en-colombia/).

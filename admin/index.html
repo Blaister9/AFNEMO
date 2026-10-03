@@ -5,9 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AFNEMO - Panel de Administración</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/admin/guia.css">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body>
+<body class="admin-shell">
+  <header class="admin-helpbar" aria-label="Ayuda editorial de AFNEMO">
+    <a class="guide-brand" href="/" target="_blank" rel="noopener noreferrer" aria-label="Ver AFNEMO en una nueva pestaña">AFNEMO</a>
+    <span class="admin-help-title">Espacio editorial</span>
+    <a href="/admin/guia.html" target="_blank" rel="noopener noreferrer">Guía para publicar ↗</a>
+    <a href="/" target="_blank" rel="noopener noreferrer">Ver sitio ↗</a>
+  </header>
+  <div id="nc-root"></div>
   <noscript>Para administrar contenidos se requiere JavaScript. <a href="/">Volver a AFNEMO</a>.</noscript>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script src="/admin/preview.js"></script>

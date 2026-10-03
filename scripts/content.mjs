@@ -18,6 +18,7 @@ export function safeUrl(value, { image = false } = {}) {
     return /^\/assets\/images\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_.-]+\.(?:png|jpe?g|webp|avif)$/i.test(imagePath) && !imagePath.includes('..') ? imagePath : '';
   }
   if (/^#[a-zA-Z0-9_-]+$/.test(value)) return value;
+  if (/^\/asociacion\/(?:#[a-zA-Z0-9_-]+)?$/.test(value)) return value;
   if (/^\/(?:noticias|experiencias)\/(?:[a-z0-9-]+\/)?(?:#[a-zA-Z0-9_-]+)?$/.test(value)) return value;
   if (/^\/#(?:[a-zA-Z0-9_-]+)$/.test(value) || value === '/') return value;
   try {
@@ -116,7 +117,8 @@ export function normalizeContent(parsed, filename, collection) {
   if (collection === 'noticias') return {
     ...record, date: isoDate(meta.date, filename, true), event_date: isoDate(meta.event_date, filename),
     updated_at: isoDate(meta.updated_at, filename), source_date: documentedDate(meta.source_date, filename),
-    source: typeof meta.source === 'string' ? meta.source : '', category: String(meta.category || meta.tag || 'Noticias')
+    source: typeof meta.source === 'string' ? meta.source : '', historical: meta.historical === true,
+    category: String(meta.category || meta.tag || 'Noticias')
   };
   if (Object.keys(meta).some(key => /^(?:lat|lng|lon|latitude|longitude|coordinates|location|address)$/i.test(key))) throw new Error(`${filename}: no se admite ubicación puntual`);
   const precision = requiredString(meta, 'public_precision', filename);
@@ -145,4 +147,19 @@ export async function loadCollection(root, collection) {
   }
   if (new Set(records.map(record => record.slug)).size !== records.length) throw new Error(`${collection}: identificadores duplicados`);
   return records.sort((a, b) => String(b.date || b.event_date).localeCompare(String(a.date || a.event_date)) || a.title.localeCompare(b.title, 'es'));
+}
+
+export async function loadInstitutional(root) {
+  const filename = 'content/institucional/asociacion.md';
+  let raw;
+  try { raw = await fs.readFile(path.join(root, filename), 'utf8'); }
+  catch (error) { if (error.code === 'ENOENT') return null; throw error; }
+  const { meta, body } = parseContent(raw, filename);
+  if (meta.published !== true) return null;
+  if (!body) throw new Error(`${filename}: contenido vacío`);
+  return {
+    title: requiredString(meta, 'title', filename), excerpt: requiredString(meta, 'excerpt', filename),
+    source: requiredString(meta, 'source', filename), reviewed_at: isoDate(meta.reviewed_at, filename, true),
+    url: '/asociacion/', html: renderMarkdown(body)
+  };
 }

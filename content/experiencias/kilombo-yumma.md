@@ -18,7 +18,7 @@ milestones:
 
 El documento institucional sitúa el nacimiento del Kilombo Yumma en 2014 como una extensión de AFNEMO. Lo describe como un espacio de resistencia, preservación y transmisión de saberes de medicina ancestral y tradicional de mujeres provenientes del Pacífico colombiano que construyeron sus vidas en Bogotá tras el desplazamiento.
 
-Esta experiencia vincula memoria, identidad y cuidado comunitario. Su historia también se relaciona con KilomboApp, una iniciativa de documentación digital de los saberes ancestrales.
+Esta experiencia vincula memoria, identidad y cuidado comunitario. Su historia también se relaciona con [KilomboApp](/experiencias/kilomboapp/), una iniciativa de documentación digital de los saberes ancestrales.
 
 ## Alcance de esta memoria
 
@@ -28,4 +28,4 @@ La ubicación publicada corresponde a Bogotá como contexto territorial. Esta fi
 
 Síntesis del apartado «Nuestras iniciativas» del documento institucional, cuya publicación se indica el 21 de agosto de 2024. La compilación del Word es del 19 de febrero de 2025; esta revisión editorial se realizó el 2 de octubre de 2026.
 
-Las fotografías recibidas permanecen fuera de esta ficha hasta confirmar su contexto, créditos y autorización de publicación.
+[Leer la reflexión de AFNEMO sobre saberes ancestrales y biodiversidad en Bogotá](/noticias/2024-11-26-saberes-ancestrales-biodiversidad/).
