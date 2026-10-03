@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="assets/css/hero.css">
 <link rel="stylesheet" href="assets/css/sections.css">
 <link rel="stylesheet" href="assets/css/responsive.css">
+<link rel="stylesheet" href="assets/css/content.css">
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -220,23 +221,37 @@
   </div></div>
 </section>
 <!-- ==========================================
-     MAPA INSTITUCIONAL ARCGIS
+     TERRITORIOS Y EXPERIENCIAS
 ========================================== -->
 <section class="arcgis-section" id="mapa-institucional">
   <div class="arcgis-section-header">
-    <div class="section-tag">Territorios y experiencias</div>
-    <h2>Emprendimientos afrocolombianos en Bogotá</h2>
-    <p>El visor del portal de la Secretaría Distrital de Gobierno reúne emprendimientos por categorías y localidades. Sus datos se mantienen en ese portal externo.</p>
-    <p><a href="#experiencias-relacionadas">Ir al listado de experiencias de AFNEMO ↓</a></p>
+    <div class="section-tag">Memoria y territorio</div>
+    <h2>Territorios y experiencias</h2>
+    <p>Dos formas de acercarse al territorio: consultar los emprendimientos de Bogotá y conocer las historias documentadas por AFNEMO.</p>
+    <nav class="territory-paths" aria-label="Explorar territorios y experiencias">
+      <a href="#territory-map"><span>01 · Mapa</span>Emprendimientos en Bogotá <span aria-hidden="true">↓</span></a>
+      <a href="#experiencias-relacionadas"><span>02 · Experiencias AFNEMO</span>Historias y procesos documentados <span aria-hidden="true">↓</span></a>
+    </nav>
   </div>
-  <div class="arcgis-map-wrapper">
-    <iframe src="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" loading="lazy" allowfullscreen title="Visor externo: emprendimientos afrocolombianos en Bogotá" aria-describedby="map-help"></iframe>
+  <div id="territory-map" data-state="idle" class="territory-map" tabindex="-1">
+    <div class="territory-section-heading"><p class="territory-eyebrow">01 · Cartografía de consulta</p>
+      <h3>Emprendimientos Afrocolombianos en Bogotá</h3>
+      <p>Este mapa reúne emprendimientos afrocolombianos por categorías y localidades. Sus puntos no representan sedes, proyectos ni experiencias de AFNEMO.</p>
+      <p class="map-source">Fuente: <a href="https://mapas.gobiernobogota.gov.co/waportal/home/item.html?id=a9e507d5218647efb0d83119272b7338" target="_blank" rel="noopener noreferrer">Portal de mapas de la Secretaría Distrital de Gobierno (otra pestaña)</a>.</p>
+    </div>
+    <div class="arcgis-map-wrapper">
+      <div id="map-intro" class="map-intro"><p>Una mirada a los emprendimientos de la ciudad</p><p>Explora el recurso territorial del portal de Bogotá.</p><button id="map-load" type="button" class="territory-button" hidden>Abrir mapa aquí</button><noscript><p>Consulta el mapa en el enlace al portal de Gobierno que aparece a continuación.</p></noscript></div>
+      <iframe id="map-frame" data-src="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" hidden allowfullscreen title="Visor externo: emprendimientos afrocolombianos en Bogotá" aria-describedby="map-help"></iframe>
+    </div>
+    <div class="map-controls-public"><p id="map-status" role="status">Las experiencias de AFNEMO están disponibles debajo del mapa.</p><div><button id="map-retry" class="territory-button secondary" type="button" hidden>Reintentar mapa</button><button id="map-close" class="territory-button secondary" type="button" hidden>Cerrar mapa</button></div></div>
+    <p class="map-help" id="map-help">Si el visor no aparece, puedes <a href="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" target="_blank" rel="noopener noreferrer">abrir el mapa en el portal de Gobierno (otra pestaña)</a> o <a href="#experiencias-relacionadas">seguir con las experiencias de AFNEMO ↓</a>.</p>
   </div>
-  <p class="map-help" id="map-help">Si el visor no carga, puedes <a href="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" target="_blank" rel="noopener noreferrer">abrir el mapa en el portal de Gobierno (otra pestaña)</a>. Las fichas de AFNEMO siguen disponibles abajo.</p>
   <div id="experiencias-relacionadas" class="territory-stories" tabindex="-1">
-    <h3>Relatos vinculados a territorios</h3>
-    <p>Explora memorias documentadas de AFNEMO en Bogotá y San Basilio de Palenque. Este listado es independiente de los puntos del visor; las fichas no señalan sedes ni ubicaciones exactas.</p>
-    <div class="territory-links"><a href="/experiencias/?territory=Bogot%C3%A1">Experiencias en Bogotá →</a><a href="/experiencias/?territory=San%20Basilio%20de%20Palenque">Memoria en Palenque →</a><a href="/experiencias/">Todas las experiencias →</a></div>
+    <p class="territory-eyebrow">02 · Archivo de la organización</p>
+    <h3>Experiencias AFNEMO</h3>
+    <p>Historias, iniciativas y procesos con sus fuentes y territorios documentados. Este archivo es independiente de los emprendimientos del mapa.</p>
+    <div id="territory-explorer"><!-- EXPERIENCE_EXPLORER --></div>
+    <a class="territory-all" href="/experiencias/">Abrir el archivo de experiencias →</a>
   </div>
 </section>
 <!-- ==========================================
@@ -288,6 +303,8 @@
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/animations.js"></script>
 <script src="assets/js/news.js" defer></script>
+<script src="assets/js/experiences.js" defer></script>
+<script src="assets/js/territory-map.js" defer></script>
 
 <!-- Netlify Identity -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

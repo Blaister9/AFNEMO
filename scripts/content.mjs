@@ -57,6 +57,38 @@ function requiredString(meta, field, filename) {
   return meta[field].trim();
 }
 
+function optionalString(meta, field, filename) {
+  if (meta[field] == null) return '';
+  if (typeof meta[field] !== 'string') throw new Error(`${filename}: ${field} debe ser texto`);
+  return meta[field].trim();
+}
+
+function optionalList(meta, field, filename) {
+  if (meta[field] == null) return [];
+  if (!Array.isArray(meta[field])) throw new Error(`${filename}: ${field} debe ser una lista`);
+  return meta[field].map(item => {
+    if (!item || Array.isArray(item) || typeof item !== 'object') throw new Error(`${filename}: elemento de ${field} no válido`);
+    return item;
+  });
+}
+
+function rejectPointLocations(value, filename, seen = new WeakSet()) {
+  if (!value || typeof value !== 'object' || seen.has(value)) return;
+  seen.add(value);
+  for (const [key, item] of Object.entries(value)) {
+    if (/^(?:lat|lng|lon|latitude|longitude|coordinates|location|address|latitud|longitud|coordenadas|direcci[oó]n)$/i.test(key)) throw new Error(`${filename}: no se admite ubicación puntual`);
+    rejectPointLocations(item, filename, seen);
+  }
+}
+
+function linkedItem(item, filename, field, { optionalUrl = false, credit = false } = {}) {
+  const label = requiredString(item, 'label', filename);
+  const rawUrl = optionalString(item, 'url', filename);
+  const url = safeUrl(rawUrl);
+  if ((!optionalUrl || rawUrl) && !url) throw new Error(`${filename}: URL de ${field} no permitida`);
+  return { label, url, ...(credit ? { credit: optionalString(item, 'credit', filename) } : {}) };
+}
+
 export function isoDate(value, filename, required = false) {
   if (!value && !required) return '';
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(value) || Number.isNaN(Date.parse(value))) throw new Error(`${filename}: fecha ISO inválida`);
@@ -120,19 +152,40 @@ export function normalizeContent(parsed, filename, collection) {
     source: typeof meta.source === 'string' ? meta.source : '', historical: meta.historical === true,
     category: String(meta.category || meta.tag || 'Noticias')
   };
-  if (Object.keys(meta).some(key => /^(?:lat|lng|lon|latitude|longitude|coordinates|location|address)$/i.test(key))) throw new Error(`${filename}: no se admite ubicación puntual`);
-  const precision = requiredString(meta, 'public_precision', filename);
-  if (!['none', 'city', 'locality', 'region'].includes(precision)) throw new Error(`${filename}: precisión pública no válida`);
-  const materials = (meta.materials || []).map(material => {
-    const url = safeUrl(material.url);
-    if (!url) throw new Error(`${filename}: URL de material no permitida`);
-    return { label: requiredString(material, 'label', filename), url, credit: typeof material.credit === 'string' ? material.credit : '' };
+  rejectPointLocations(meta, filename);
+  const precision = optionalString(meta, 'public_precision', filename);
+  if (precision && !['none', 'city', 'locality', 'region'].includes(precision)) throw new Error(`${filename}: precisión pública no válida`);
+  const locationType = optionalString(meta, 'location_type', filename) || (precision && precision !== 'none' ? 'territorial' : 'unpublished');
+  if (!['exact', 'approximate', 'territorial', 'unpublished'].includes(locationType)) throw new Error(`${filename}: tipo de ubicación no válido`);
+  const materials = optionalList(meta, 'materials', filename).map(item => linkedItem(item, filename, 'material', { credit: true }));
+  const videos = optionalList(meta, 'videos', filename).map(item => linkedItem(item, filename, 'video', { credit: true }));
+  const sources = optionalList(meta, 'sources', filename).map(item => linkedItem(item, filename, 'fuente', { optionalUrl: true }));
+  const seenImages = new Set(record.image ? [record.image] : []);
+  const gallery = optionalList(meta, 'gallery', filename).map(item => imageFields(item, filename)).filter(item => {
+    if (!item.image || seenImages.has(item.image)) return false;
+    seenImages.add(item.image);
+    return true;
   });
-  const milestones = (meta.milestones || []).map(item => ({ label: requiredString(item, 'label', filename), date: documentedDate(requiredString(item, 'date', filename), filename) }));
+  const milestones = optionalList(meta, 'milestones', filename).map(item => ({
+    label: requiredString(item, 'label', filename), date: documentedDate(requiredString(item, 'date', filename), filename),
+    description: optionalString(item, 'description', filename)
+  }));
+  let relatedInitiative = null;
+  if (meta.related_initiative != null) {
+    if (Array.isArray(meta.related_initiative) || typeof meta.related_initiative !== 'object') throw new Error(`${filename}: iniciativa relacionada no válida`);
+    // Decap can save an unused optional object with empty child fields.
+    if (Object.values(meta.related_initiative).some(value => value != null && value !== '')) relatedInitiative = linkedItem(meta.related_initiative, filename, 'iniciativa relacionada');
+  }
+  // Apply the publication choice before cards, filters or the public feed receive these fields.
+  const geography = Object.fromEntries(['territory', 'municipality', 'department', 'country'].map(field => [
+    field, locationType === 'unpublished' ? '' : optionalString(meta, field, filename)
+  ]));
   return {
-    ...record, initiative: requiredString(meta, 'initiative', filename), territory: requiredString(meta, 'territory', filename),
+    ...record, initiative: requiredString(meta, 'initiative', filename), ...geography, location_type: locationType,
+    context: optionalString(meta, 'context', filename), period: optionalString(meta, 'period', filename),
     source: requiredString(meta, 'source', filename), reviewed_at: isoDate(meta.reviewed_at, filename, true),
-    event_date: documentedDate(meta.event_date, filename), public_precision: precision, materials, milestones
+    event_date: documentedDate(meta.event_date, filename), event_label: optionalString(meta, 'event_label', filename),
+    related_initiative: relatedInitiative, public_precision: precision, materials, milestones, gallery, videos, sources
   };
 }
 

@@ -20,9 +20,6 @@
   .news-card:first-child { grid-column: span 2; }
   .team-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr 1fr; }
-  .map-container { grid-template-columns: 1fr; height: auto; }
-  #mapBogota { height: 450px; }
-  .map-sidebar { border-left: none; border-top: 1px solid rgba(44,24,16,0.06); max-height: 400px; }
 }
 
 /* ─── MOBILE (768px) ─── */
@@ -41,12 +38,7 @@
   .hero-actions a { max-width: 100%; }
   .scroll-indicator { display: none; }
   .cta-actions { flex-direction: column; align-items: center; }
-  .map-section { padding: 5rem 1.5rem 3rem; }
-  .map-section-header { flex-direction: column; align-items: flex-start; }
-  .map-stats-bar { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
   .arcgis-section { padding: 3rem 1.5rem 2rem; }
-  .arcgis-map-wrapper arcgis-embedded-map { height: 400px; }
 }
 
 /* ─── SMALL MOBILE (480px) ─── */

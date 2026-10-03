@@ -7,14 +7,15 @@
   var count = document.getElementById('experience-count');
   var empty = document.getElementById('experience-empty');
   function fold(value) { return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function value(name) { return form.elements[name] ? form.elements[name].value : ''; }
   function readUrl() {
     var params = new URLSearchParams(window.location.search);
-    ['q', 'initiative', 'territory'].forEach(function (name) { form.elements[name].value = params.get(name) || ''; });
+    ['q', 'initiative', 'territory'].forEach(function (name) { if (form.elements[name]) form.elements[name].value = params.get(name) || ''; });
   }
   function filter(updateUrl) {
-    var query = form.elements.q.value.trim();
-    var initiative = form.elements.initiative.value;
-    var territory = form.elements.territory.value;
+    var query = value('q').trim();
+    var initiative = value('initiative');
+    var territory = value('territory');
     var visible = 0;
     cards.forEach(function (card) {
       card.hidden = !((!query || fold(card.dataset.title).includes(fold(query))) &&

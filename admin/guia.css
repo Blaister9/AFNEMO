@@ -37,6 +37,8 @@
 .guide-callout { background: #e1e8d9; padding: 1.4rem 1.6rem; border-radius: 10px; margin: 2rem 0 0; }
 .guide-callout p { margin: 0; }
 .guide-example { background: #fffaf0; padding: 1.5rem; border: 1px solid #d7c8ab; border-radius: 12px; align-self: start; }
+.guide-territory-example { margin: 1.5rem 0 2rem; }
+.guide-territory-example p:last-child { margin-bottom: 0; }
 .guide-checklist { padding-left: 1.25rem; }
 .guide-checklist li { padding-left: .25rem; margin-bottom: .75rem; }
 .guide-checklist li::marker { color: var(--guide-green); }
@@ -66,10 +68,21 @@
 .afnemo-preview-checks h2 { font-size: 1rem; margin: 0 0 .5rem; }
 .afnemo-preview-checks ul { padding-left: 1.2rem; margin: 0; }
 .afnemo-preview .afnemo-preview-meta { font-size: .88rem; color: #625445; }
+.afnemo-preview-lead { font-size: 1.12rem; }
+.afnemo-preview-context { white-space: pre-line; }
+.afnemo-preview-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1.4rem; }
+.afnemo-preview .afnemo-preview-gallery figure { margin: 0; }
+.afnemo-preview-milestones { list-style: none; border-left: 2px solid #c8860a; padding-left: 1.4rem; }
+.afnemo-preview-milestones li { position: relative; margin: 0 0 1.5rem; }
+.afnemo-preview-milestones li::before { content: ''; position: absolute; top: .65rem; left: -1.75rem; width: .55rem; height: .55rem; border-radius: 50%; background: #1b4d35; }
+.afnemo-preview-milestones time { color: #625445; font-size: .88rem; }
+.afnemo-preview-milestones h3 { font-size: 1.1rem; margin: .2rem 0 .5rem; }
+.afnemo-preview-milestones p { margin: 0; }
 .afnemo-preview figure { margin: 1.5rem 0; }
 .afnemo-preview img { max-width: 100%; height: auto; display: block; border-radius: 8px; }
 .afnemo-preview figcaption { font-size: .85rem; margin-top: .5rem; color: #625445; }
 .afnemo-preview a { color: #1b4d35; }
+.afnemo-preview a:focus-visible { outline: 3px solid #d59110; outline-offset: 4px; }
 .afnemo-preview-body img { display: none; }
 @media (min-width: 641px) and (max-width: 850px) { .guide-choice-grid { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .guide-topbar { padding: 1rem 5%; gap: .75rem; } .guide-topbar > span { display: none; } .guide-topbar .guide-brand { font-size: 1.4rem; } .guide-main { width: 89%; } .guide-hero { padding-top: 44px; } .guide-choice-grid, .guide-two-column { grid-template-columns: 1fr; } .guide-choice { padding: 1.4rem; } .guide-main section { padding: 32px 0; } .guide-main .guide-final { padding: 1.4rem; } .guide-steps > li { grid-template-columns: 34px 1fr; gap: .7rem; } .guide-steps > li::before { width: 30px; height: 30px; font-size: .85rem; } .guide-table-wrap th, .guide-table-wrap td { padding: .8rem; } .guide-table-wrap tbody th { min-width: 120px; } .admin-helpbar { padding: .5rem 1rem; gap: .6rem; } .admin-helpbar .guide-brand { font-size: 1.25rem; } .admin-helpbar .admin-help-title { display: none; } .admin-helpbar a:nth-last-child(2) { margin-left: auto; } .afnemo-preview { padding: 16px; } }

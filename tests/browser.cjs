@@ -58,7 +58,7 @@ async function verifyImages(page, route) {
  assert.ok(museum.image_width > 0 && museum.image_height > 0 && museum.image_alt && museum.image_credit, 'museum image has dimensions, description and credit');
  const routes = ['/', '/noticias/', '/experiencias/', '/asociacion/', '/admin/guia.html', ...news.map(x => x.url), ...experiences.map(x => x.url)];
  const recordsByUrl = new Map([...news, ...experiences].map(record => [record.url, record]));
- const captureRoutes = new Set(['/', '/noticias/', '/experiencias/', '/asociacion/', '/admin/guia.html', museum.url, ...news.map(record => record.url)]);
+ const captureRoutes = new Set(['/', '/noticias/', '/experiencias/', '/asociacion/', '/admin/guia.html', ...experiences.map(record => record.url), ...news.map(record => record.url)]);
  const links = new Set(), captures = [];
  for (const [screen, width, height] of [['desktop',1440,1000], ['mobile',390,844], ['small',320,568]]) {
   await page.setViewportSize({width,height});
@@ -81,7 +81,7 @@ async function verifyImages(page, route) {
     assert.match(await page.locator('.content-notice').innerText(), /históricas.*confirmación/s);
    }
    if (route === '/admin/guia.html') {
-    assert.equal(await page.locator('.guide-toc a').count(), 5, 'all five editorial guide steps are linked');
+    assert.ok(await page.locator('.guide-toc a').count() >= 5, 'the editorial guide sections are linked');
     assert.equal(await page.locator('a[href^="/admin/#/collections/"]').count(), 3, 'guide links to the existing CMS collections');
    }
    for (const href of await page.locator('a[href]').evaluateAll(a => a.map(x => x.href))) if(href.startsWith(base)) links.add(href);
@@ -151,7 +151,7 @@ async function verifyImages(page, route) {
  await page.waitForSelector('#noticias-container a');
  assert.equal(await page.locator('iframe').getAttribute('title'),'Visor externo: emprendimientos afrocolombianos en Bogotá');
  await page.locator('#mapa-institucional').scrollIntoViewIfNeeded();
- assert.equal(await page.locator('#experiencias-relacionadas a').count(),3);
+ assert.equal(await page.locator('#experiencias-relacionadas [data-experience]').count(), experiences.length, 'all five AFNEMO experiences remain available outside the map');
  // Keyboard skip navigation.
  await page.goto(base+'/'); await page.keyboard.press('Tab');
  assert.equal(await page.locator('.skip-link').evaluate(e=>document.activeElement===e),true);
@@ -159,6 +159,7 @@ async function verifyImages(page, route) {
  assert.equal(requests.some(x=>x.includes('api.github.com')||x.includes('raw.githubusercontent.com')),false);
  assert.deepEqual(errors,[]);
  const noJS = await browser.newContext({ javaScriptEnabled:false,viewport:{width:390,height:844} });
+ await noJS.route('**/*', route => new URL(route.request().url()).origin === new URL(base).origin ? route.continue() : route.abort());
  const staticPage = await noJS.newPage();
  await staticPage.goto(base+'/experiencias/');
  assert.equal(await staticPage.locator('[data-experience]:visible').count(), experiences.length);

@@ -3,13 +3,13 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadCollection, loadInstitutional, inspectImage } from './content.mjs';
-import { createPageRenderer, newsList, newsDetail, experiencesList, experienceDetail, institutionalDetail } from './pages.mjs';
+import { createPageRenderer, newsList, newsDetail, experiencesList, experienceExplorer, experienceDetail, institutionalDetail } from './pages.mjs';
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Explicit public source list: no recursive repository copy, raw content or source documents.
 const codeAssets = [
   'assets/css/main.css', 'assets/css/nav.css', 'assets/css/hero.css', 'assets/css/sections.css', 'assets/css/responsive.css', 'assets/css/content.css',
-  'assets/js/nav.js', 'assets/js/animations.js', 'assets/js/news.js', 'assets/js/experiences.js'
+  'assets/js/nav.js', 'assets/js/animations.js', 'assets/js/news.js', 'assets/js/experiences.js', 'assets/js/territory-map.js'
 ];
 const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
 const existingPublicImages = new Set(['/assets/images/hero-image.webp']);
@@ -21,6 +21,7 @@ export async function build(root = sourceRoot) {
   try { if ((await fs.lstat(out)).isSymbolicLink()) throw new Error('dist no debe ser un enlace simbólico'); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   let index = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const [news, experiences, institutional] = await Promise.all([loadCollection(root, 'noticias'), loadCollection(root, 'experiencias'), loadInstitutional(root)]);
+  index = index.replace('<!-- EXPERIENCE_EXPLORER -->', experienceExplorer(experiences, { compact: true }));
   if (!institutional) index = index.replace(/<a\b[^>]*data-institutional[^>]*>[\s\S]*?<\/a>/g, '');
   const imageCache = new Map();
   const readImage = async image => {
@@ -33,7 +34,8 @@ export async function build(root = sourceRoot) {
     imageCache.set(image, result);
     return result;
   };
-  for (const record of [...news, ...experiences]) {
+  const imageRecords = [...news, ...experiences, ...experiences.flatMap(record => record.gallery || [])];
+  for (const record of imageRecords) {
     if (!record.image) continue;
     const dimensions = await readImage(record.image);
     record.image_width = dimensions.width;
@@ -58,7 +60,7 @@ export async function build(root = sourceRoot) {
     versions.set(asset, versioned);
     publicAssets.set(versioned, bytes);
   }
-  const allowedImages = new Set([...existingPublicImages, ...[...news, ...experiences].map(record => record.image).filter(Boolean)]);
+  const allowedImages = new Set([...existingPublicImages, ...imageRecords.map(record => record.image).filter(Boolean)]);
   const referencedImages = new Set();
   for (const [filename, html] of pages) {
     const versioned = html.replace(/((?:src|href)=")\/?(assets\/(?:css|js)\/[^"?]+)(?:\?[^"\s]*)?"/g, (match, prefix, asset) => {

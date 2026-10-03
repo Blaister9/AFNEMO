@@ -38,9 +38,9 @@ collections:
       - {label: "Mostrar en el sitio", name: "published", widget: "boolean", default: false, hint: "Activa cuando la entrada esté revisada. Solo aparece después de guardar y generar una versión publicada. Desactivar NO vuelve privado el contenido: el repositorio y su historial son públicos."}
 
   - name: "experiencias"
-    label: "Iniciativas documentadas"
-    label_singular: "Ficha de iniciativa"
-    description: "Describe una iniciativa con su historia, fuente y territorio general. No uses esta colección para inventar una lista de videos: enlaza solo materiales identificados. Guía: /admin/guia.html"
+    label: "Experiencias AFNEMO"
+    label_singular: "Ficha de experiencia"
+    description: "Documenta territorio, contexto, relato y fuentes de una experiencia. Estas fichas no son los puntos del mapa de emprendimientos afrocolombianos en Bogotá. Completa solo lo que esté respaldado. Guía: /admin/guia.html#territorios"
     folder: "content/experiencias"
     create: true
     slug: "{{slug}}"
@@ -49,20 +49,45 @@ collections:
     fields:
       - {label: "Identificador permanente", name: "id", widget: "string", hint: "Se usa en el enlace público. No cambiar después de publicar.", pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Usa minúsculas, números y guiones"]}
       - {label: "Título", name: "title", widget: "string"}
-      - {label: "Resumen", name: "excerpt", widget: "text"}
-      - {label: "Iniciativa", name: "initiative", widget: "string"}
-      - {label: "Territorio documentado", name: "territory", widget: "string", hint: "Solo región, ciudad o localidad documentada. No direcciones, coordenadas ni lugares de atención sin autorización."}
-      - {label: "Precisión pública", name: "public_precision", widget: "select", options: [{label: "Sin ubicación pública", value: "none"}, {label: "Región", value: "region"}, {label: "Ciudad", value: "city"}, {label: "Localidad", value: "locality"}], default: "none"}
-      - {label: "Fecha documentada (AAAA, AAAA-MM o AAAA-MM-DD)", name: "event_date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}){0,2}$', "No inventes el día o mes"]}
+      - {label: "Resumen", name: "excerpt", widget: "text", hint: "Presenta la experiencia brevemente. Aporta contexto nuevo en el relato, sin copiar este resumen."}
+      - {label: "Iniciativa", name: "initiative", widget: "string", hint: "Nombre de la iniciativa o proceso documentado. Distingue una herramienta digital de la iniciativa territorial."}
+      - {label: "Territorio público", name: "territory", widget: "string", required: false, hint: "Publica solo el territorio respaldado por la fuente: por ejemplo San Basilio de Palenque, Bogotá o Colombia. Territorio público no significa Ubicación exacta, sede de AFNEMO ni punto del mapa. Déjalo vacío si no consta."}
+      - {label: "Municipio o ciudad", name: "municipality", widget: "string", required: false, hint: "Solo si consta explícitamente en el material. No lo deduzcas del nombre de la iniciativa."}
+      - {label: "Departamento", name: "department", widget: "string", required: false, hint: "Completa únicamente con respaldo documental; no hace falta rellenar todos los niveles."}
+      - {label: "País", name: "country", widget: "string", required: false, hint: "Puede ser el único nivel conocido. No añadas una localización más precisa por suposición."}
+      - {label: "Tipo de ubicación", name: "location_type", widget: "select", required: false, options: [{label: "Exacta", value: "exact"}, {label: "Aproximada", value: "approximate"}, {label: "Únicamente territorial", value: "territorial"}, {label: "No publicada", value: "unpublished"}], hint: "Elige el nivel documentado y apropiado para publicación. Exacta solo cuando ese nivel esté confirmado para difusión. Este editor no solicita direcciones ni coordenadas y no crea marcadores en el mapa. No publicada oculta la información territorial de la ficha pública."}
+      - {label: "Precisión anterior (compatibilidad)", name: "public_precision", widget: "hidden", required: false}
+      - {label: "Contexto territorial", name: "context", widget: "text", required: false, hint: "Explica la relación entre territorio y experiencia con información de la fuente. Evita repetir resumen o relato."}
+      - {label: "Año o periodo documentado", name: "period", widget: "string", required: false, hint: "Para un periodo expresado en la fuente, como 2023–2024. Si solo conoces un año, usa la fecha documentada. No inventes continuidad hasta el presente."}
+      - {label: "Fecha documentada (AAAA, AAAA-MM o AAAA-MM-DD)", name: "event_date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}){0,2}$', "No inventes el día o mes"], hint: "Respeta la precisión de la fuente. Un único año se presenta como fecha, sin crear una cronología artificial."}
+      - {label: "Qué representa esta fecha", name: "event_label", widget: "string", required: false, hint: "Por ejemplo: Primera versión documentada o Fecha de publicación. Una publicación o revisión no equivale al inicio de la experiencia."}
       - label: "Hitos documentados"
         name: "milestones"
         widget: "list"
         required: false
+        hint: "Solo acontecimientos de la experiencia respaldados por fuentes. Dos o más hitos pueden formar una cronología; un único hito se muestra como fecha. No incluyas fechas de publicación de fuentes ni revisiones editoriales como hitos históricos."
         fields:
           - {label: "Hito", name: "label", widget: "string"}
           - {label: "Fecha (AAAA, AAAA-MM o AAAA-MM-DD)", name: "date", widget: "string", pattern: ['^\d{4}(-\d{2}){0,2}$', "No inventes el día o mes"]}
-      - {label: "Relato", name: "body", widget: "markdown", hint: "Distingue la experiencia histórica de su operación actual. Las imágenes en el cuerpo no se publican."}
-      - {label: "Fuente documental", name: "source", widget: "text"}
+          - {label: "Descripción del hito", name: "description", widget: "text", required: false, hint: "Añade solo contexto documentado, sin repetir el título del hito."}
+      - {label: "Relato", name: "body", widget: "markdown", hint: "Desarrolla la historia con subtítulos. Distingue la experiencia histórica de su operación actual y no repitas el resumen o el contexto. Las imágenes en el cuerpo no se publican: usa la imagen principal o la galería."}
+      - label: "Iniciativa relacionada"
+        name: "related_initiative"
+        widget: "object"
+        required: false
+        hint: "Enlaza una iniciativa o ficha que tenga una relación documentada. No vincules puntos del mapa por coincidencia de nombre o territorio."
+        fields:
+          - {label: "Nombre del enlace", name: "label", widget: "string"}
+          - {label: "Enlace público", name: "url", widget: "string", hint: "Una dirección HTTPS o una página local, por ejemplo /experiencias/kilombo-yumma/."}
+      - {label: "Fuente documental principal", name: "source", widget: "text", hint: "Identifica el documento, artículo o testimonio que respalda la ficha. Su fecha de publicación no es un hito de la experiencia."}
+      - label: "Fuentes adicionales"
+        name: "sources"
+        widget: "list"
+        required: false
+        hint: "Añade referencias comprobadas sin repetir la fuente principal. El enlace es opcional cuando no existe una versión pública."
+        fields:
+          - {label: "Referencia de la fuente", name: "label", widget: "string"}
+          - {label: "Enlace público de la fuente", name: "url", widget: "string", required: false, hint: "Solo HTTPS o una página local. No subas documentos originales ni datos personales."}
       - {label: "Revisión documental realizada", name: "reviewed", widget: "boolean", default: false, hint: "No confirma la operación actual de la iniciativa. Es obligatoria para publicar."}
       - {label: "Fecha de revisión documental", name: "reviewed_at", widget: "datetime", format: "YYYY-MM-DD", time_format: false}
       - {label: "Estado editorial", name: "status", widget: "select", options: [{label: "Borrador", value: "draft"}, {label: "Publicado", value: "published"}], default: "draft", hint: "Borrador NO significa privado: el archivo y su historial siguen en el repositorio público."}
@@ -79,6 +104,25 @@ collections:
       - {label: "Permiso de publicación de imagen comprobado", name: "image_authorized", widget: "boolean", default: false}
       - {label: "Descripción accesible de la imagen", name: "image_alt", widget: "string", required: false, hint: "Describe la escena documentada sin inferir nombres, fechas o lugares."}
       - {label: "Crédito y autorización de la imagen", name: "image_credit", widget: "string", required: false, hint: "Atribución acordada y permiso comprobado. Obligatorio al mostrar la imagen."}
+      - label: "Galería de fotografías"
+        name: "gallery"
+        widget: "list"
+        required: false
+        hint: "Selecciona fotografías documentadas y con permiso. No repitas la imagen principal. Cada fotografía necesita descripción y crédito para mostrarse."
+        fields:
+          - {label: "Fotografía", name: "image", widget: "image", hint: "Subir incorpora el archivo al repositorio público. No subas imágenes con permisos pendientes."}
+          - {label: "Permiso de publicación comprobado", name: "image_authorized", widget: "boolean", default: false}
+          - {label: "Descripción accesible", name: "image_alt", widget: "string", required: false}
+          - {label: "Crédito de la fotografía", name: "image_credit", widget: "string", required: false, hint: "Conserva la atribución suministrada. No inventes autoría."}
+      - label: "Videos públicos"
+        name: "videos"
+        widget: "list"
+        required: false
+        hint: "Enlaza solo videos identificados y relacionados con el relato. No hace falta añadir un video a cada experiencia."
+        fields:
+          - {label: "Título del video", name: "label", widget: "string"}
+          - {label: "Enlace público del video", name: "url", widget: "string", hint: "Usa el enlace HTTPS al video original."}
+          - {label: "Crédito del video", name: "credit", widget: "string", required: false}
 
   - name: "institucional"
     label: "Asociación y trayectoria"

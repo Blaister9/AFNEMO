@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Guía para publicar | AFNEMO</title>
-  <meta name="description" content="Una guía sencilla para compartir noticias, memoria e iniciativas de AFNEMO desde su editor de contenidos.">
+  <meta name="description" content="Guía para documentar noticias, territorios y experiencias AFNEMO con fuentes, fechas y material audiovisual comprobados.">
   <link rel="stylesheet" href="/admin/guia.css">
 </head>
 <body class="editor-guide">
@@ -21,7 +21,7 @@
       <h1>Una historia,<br><em>paso a paso.</em></h1>
       <p class="guide-lead">Reúne el relato, comprueba sus fechas y elige una fotografía con permiso. El editor te acompaña para convertirlo en una publicación de AFNEMO.</p>
       <nav aria-label="En esta guía" class="guide-toc">
-        <a href="#elegir">Qué vas a contar</a><a href="#pasos">Cómo publicarlo</a><a href="#fotografias">Fotografías</a><a href="#fechas">Fechas</a><a href="#revision">Última revisión</a>
+        <a href="#elegir">Qué vas a contar</a><a href="#pasos">Cómo publicarlo</a><a href="#territorios">Territorios y experiencias</a><a href="#fotografias">Fotografías y videos</a><a href="#fechas">Fechas e hitos</a><a href="#revision">Última revisión</a>
       </nav>
     </header>
 
@@ -30,7 +30,7 @@
       <h2 id="elegir-titulo">¿Qué vas a contar?</h2>
       <div class="guide-choice-grid">
         <article class="guide-choice"><span class="guide-number" aria-hidden="true">N</span><h3>Una noticia o memoria</h3><p>Un encuentro, una participación o un artículo con fecha. Por ejemplo, una memoria de AFNEMO en la COP16.</p><p class="guide-small">En el editor: <strong>Noticias y memoria</strong>.</p><a href="/admin/#/collections/noticias">Crear o editar una noticia →</a></article>
-        <article class="guide-choice"><span class="guide-number" aria-hidden="true">I</span><h3>Una iniciativa documentada</h3><p>Su historia, propósito y relación con un territorio. Por ejemplo, la ficha del Museo del Viernes Negro.</p><p class="guide-small">En el editor: <strong>Iniciativas documentadas</strong>.</p><a href="/admin/#/collections/experiencias">Crear o editar una ficha →</a></article>
+        <article class="guide-choice"><span class="guide-number" aria-hidden="true">E</span><h3>Una experiencia documentada</h3><p>Su historia, propósito y relación con un territorio. Por ejemplo, la ficha del Museo del Viernes Negro.</p><p class="guide-small">En el editor: <strong>Experiencias AFNEMO</strong>.</p><a href="/admin/#/collections/experiencias">Crear o editar una ficha →</a></article>
         <article class="guide-choice"><span class="guide-number" aria-hidden="true">A</span><h3>La asociación y su trayectoria</h3><p>Origen, misión, objetivos y proyectos realizados. Una sola página amplía la información institucional del inicio.</p><p class="guide-small">En el editor: <strong>Asociación y trayectoria</strong>.</p><a href="/admin/#/collections/institucional/entries/asociacion">Editar la página institucional →</a></article>
       </div>
       <p class="guide-note">Una noticia puede enlazar a una ficha. Cuenta el acontecimiento en la noticia y conserva el contexto de la iniciativa en su ficha, sin repetir todo el relato.</p>
@@ -42,35 +42,57 @@
       <ol class="guide-steps">
         <li><div><h3>Reúne lo que sí está confirmado</h3><p>Prepara un título claro, un resumen corto y el relato. Ten a mano la fuente, las fechas documentadas y, si vas a usarla, la fotografía autorizada.</p><p>No hace falta llenar todos los campos: deja vacía la fecha del evento si la fuente no la identifica.</p></div></li>
         <li><div><h3>Entra y elige la colección</h3><p><a href="/admin/">Abre el editor</a> e inicia sesión con tu acceso autorizado. Entra a la colección que corresponda y elige crear una entrada o abre una existente.</p><p>En una ficha nueva, define un identificador breve, como <code>museo-viernes-negro</code>. Forma parte de su enlace: consérvalo cuando edites una ficha publicada.</p></div></li>
-        <li><div><h3>Escribe y comprueba la vista previa</h3><p>Completa título y resumen; usa subtítulos para separar el relato. Añade su fuente y enlaces útiles. La vista previa muestra la entrada que estás editando, incluida su fotografía autorizada.</p><p>En fichas, indica la iniciativa, un territorio general y la fecha de revisión documental. Esa revisión no confirma una sede o un servicio actualmente disponible.</p></div></li>
+        <li><div><h3>Escribe y comprueba la vista previa</h3><p>Completa título y resumen; usa subtítulos para separar el relato. Añade su fuente y enlaces útiles. La vista previa muestra la entrada que estás editando, incluida su fotografía autorizada.</p><p>En fichas, indica la iniciativa, las fuentes y la fecha de revisión documental. Añade territorio y contexto solo si están documentados. Esa revisión no confirma una sede o un servicio actualmente disponible.</p></div></li>
         <li><div><h3>Guarda cuando esté revisado</h3><p>Para una noticia o la página institucional listas, activa <strong>Mostrar en el sitio</strong>. Para una ficha lista, marca <strong>Revisión documental realizada</strong> y elige <strong>Publicado</strong> en su estado editorial. Guarda mediante el botón del editor.</p><p>Los cambios llegan al sitio después de que se genere y publique una nueva versión. La vista previa por sí sola no guarda ni publica. Comprueba la versión de revisión y su enlace completo antes de darla por terminada.</p></div></li>
       </ol>
       <aside class="guide-callout"><h3>Un borrador no es un archivo privado</h3><p>Desactivar su publicación lo deja fuera del sitio generado, pero el contenido guardado y los archivos subidos siguen en el repositorio público y su historial. Conserva fuera del editor los datos personales, originales de trabajo y fotografías con permisos pendientes.</p></aside>
       <p class="guide-note">El editor está conectado a la rama de publicación <code>main</code>. Antes de guardar, comprueba que tienes autorización para actualizar ese contenido. No hay un entorno de ensayo separado en este acceso.</p>
     </section>
 
-    <section id="fotografias" aria-labelledby="fotos-titulo">
-      <p class="guide-eyebrow">03 · Acompaña con una imagen</p>
-      <h2 id="fotos-titulo">La fotografía también cuenta</h2>
+    <section id="territorios" aria-labelledby="territorios-titulo">
+      <p class="guide-eyebrow">03 · Sitúa la experiencia</p>
+      <h2 id="territorios-titulo">Un territorio, una historia documentada</h2>
       <div class="guide-two-column">
-        <div><p>Usa una imagen que corresponda al relato y cuyo permiso esté comprobado. Si ya está en la biblioteca, selecciónala para evitar copias.</p><ul class="guide-checklist"><li>Usa los campos de imagen de la entrada. Las imágenes insertadas dentro del relato no aparecen en el sitio.</li><li>Completa la <strong>descripción accesible</strong>: qué muestra la foto, con información conocida y sin identificar personas por apariencia.</li><li>Indica el <strong>crédito</strong> y la autorización de publicación de forma verificable.</li><li>Activa <strong>Permiso de publicación de imagen comprobado</strong> solo cuando lo hayas confirmado.</li></ul></div>
+        <div><h3>Mapa de emprendimientos</h3><p>El mapa presenta <strong>Emprendimientos Afrocolombianos en Bogotá</strong>, una cartografía externa de consulta territorial. Sus puntos no representan sedes, proyectos ni experiencias de AFNEMO.</p><p>El mapa no se edita desde esta colección. No copies sus contactos ni asocies una ficha a un marcador por cercanía o coincidencia de nombre.</p></div>
+        <div><h3>Experiencias AFNEMO</h3><p>Las fichas cuentan historias, iniciativas y procesos documentados por la organización. Son un conjunto de contenidos distinto del mapa y se pueden leer aunque este no cargue.</p><p>Una ficha puede incluir territorio sin tener un punto en el mapa. Distingue, por ejemplo, la iniciativa territorial Kilombo Yumma de la herramienta digital KilomboApp.</p></div>
+      </div>
+      <h3>Territorio público no significa Ubicación exacta</h3>
+      <p>En <strong>Territorio público</strong> escribe solo el lugar respaldado por la fuente y apropiado para difusión. Los campos <strong>Municipio o ciudad</strong>, <strong>Departamento</strong> y <strong>País</strong> son opcionales: si solo consta Bogotá o Colombia, conserva ese nivel. No deduzcas sedes a partir de una actividad ni completes lugares desconocidos.</p>
+      <div class="guide-table-wrap"><table><caption>Cómo elegir el tipo de ubicación</caption><thead><tr><th scope="col">Tipo</th><th scope="col">Cuándo usarlo</th></tr></thead><tbody><tr><th scope="row">Exacta</th><td>Solo si ese nivel está documentado y confirmado para publicación. Esta elección no añade un marcador ni abre campos de dirección o coordenadas.</td></tr><tr><th scope="row">Aproximada</th><td>La fuente sitúa la experiencia en un entorno aproximado. Describe únicamente lo que se conoce, sin transformarlo en una sede.</td></tr><tr><th scope="row">Únicamente territorial</th><td>Se conoce una ciudad, localidad, región o territorio; no se publica una ubicación puntual.</td></tr><tr><th scope="row">No publicada</th><td>La localización no está documentada o no corresponde divulgarla. La ficha pública omite sus datos territoriales.</td></tr></tbody></table></div>
+      <p class="guide-note">No necesitas publicar coordenadas. El editor no las solicita. No inventes una dirección o un punto para completar la ficha: el territorio y la ubicación exacta son niveles distintos.</p>
+      <div class="guide-example guide-territory-example"><p class="guide-eyebrow">Ejemplo con respaldo documental</p><h3>Ruta Libertaria</h3><p><strong>Territorio público:</strong> San Basilio de Palenque. <strong>Fecha:</strong> 2023, identificada como primera versión documentada.</p><p>No completes las otras cuatro ubicaciones mencionadas de forma general en el material: sus nombres aún no están documentados. Un solo año conocido no necesita una línea de tiempo.</p></div>
+      <h3>Del territorio al relato</h3>
+      <p>El <strong>resumen</strong> presenta la experiencia; el <strong>contexto territorial</strong> explica su relación con el lugar; el <strong>relato</strong> desarrolla la historia. No copies el mismo párrafo en los tres campos. Añade hitos, fotografías, videos y una iniciativa relacionada únicamente cuando exista material que los respalde.</p>
+      <p>Identifica la <strong>fuente documental principal</strong> y añade <strong>fuentes adicionales</strong> cuando aporten evidencia. Una referencia puede no tener enlace público. La <strong>iniciativa relacionada</strong> lleva nombre y enlace a una página existente; no presupone relación con los puntos del mapa.</p>
+    </section>
+
+    <section id="fotografias" aria-labelledby="fotos-titulo">
+      <p class="guide-eyebrow">04 · Acompaña el relato</p>
+      <h2 id="fotos-titulo">Fotografías y videos con contexto</h2>
+      <div class="guide-two-column">
+        <div><p>Usa una imagen que corresponda al relato y cuyo permiso esté comprobado. Si ya está en la biblioteca, selecciónala para evitar copias.</p><ul class="guide-checklist"><li>Usa la imagen principal o la <strong>Galería de fotografías</strong> de la experiencia. No repitas la misma imagen en ambas. Las imágenes insertadas dentro del relato no aparecen en el sitio.</li><li>Completa la <strong>descripción accesible</strong> de cada fotografía: qué muestra, con información conocida y sin identificar personas por apariencia.</li><li>Indica el <strong>crédito</strong> y la autorización de publicación de forma verificable.</li><li>Activa <strong>Permiso de publicación de imagen comprobado</strong> solo cuando lo hayas confirmado, también en cada elemento de la galería.</li></ul></div>
         <aside class="guide-example"><p class="guide-eyebrow">Un ejemplo de preparación</p><h3>Antes de subirla</h3><p><strong>Archivo:</strong> <code>museo-viernes-negro.webp</code></p><p><strong>Descripción:</strong> describe la escena documentada; no añadas nombres, fechas o lugares que no consten.</p><p><strong>Crédito:</strong> usa la atribución acordada con quien suministró o autorizó la imagen.</p><p class="guide-small">Formatos admitidos: JPG, PNG, WebP o AVIF. Nombres con letras sin tildes, números y guiones. Máximo 20 MB y 40 megapíxeles; conviene entregar una versión optimizada para web.</p></aside>
       </div>
       <p class="guide-note">Si falta contexto o autorización, publica el relato sin imagen. No subas un archivo dudoso para dejarlo «pendiente» en la biblioteca.</p>
+      <p>En <strong>Videos públicos</strong>, añade el título, el enlace HTTPS al original y el crédito disponible. No hace falta que todas las experiencias tengan video o galería. Comprueba que cada enlace corresponda al material que describes.</p>
     </section>
 
     <section id="fechas" aria-labelledby="fechas-titulo">
-      <p class="guide-eyebrow">04 · Conserva la memoria</p>
+      <p class="guide-eyebrow">05 · Conserva la memoria</p>
       <h2 id="fechas-titulo">Cada fecha tiene su lugar</h2>
       <div class="guide-table-wrap"><table><caption>Campos de fecha y cuándo usarlos</caption><thead><tr><th scope="col">Campo</th><th scope="col">Qué representa</th></tr></thead><tbody><tr><th scope="row">Fecha de publicación</th><td>La fecha de la publicación que estás incorporando. Conserva la original cuando esté documentada; no la reemplaces automáticamente por hoy.</td></tr><tr><th scope="row">Fecha del evento</th><td>Cuándo ocurrió el acontecimiento, solo si consta. Puede ser diferente de la publicación.</td></tr><tr><th scope="row">Fecha de la fuente</th><td>Cuándo se publicó el artículo o documento usado como referencia. Cita la fuente y enlaza al original si está disponible.</td></tr><tr><th scope="row">Actualización</th><td>Una revisión posterior de la noticia, cuando corresponda. No borra sus fechas históricas.</td></tr><tr><th scope="row">Revisión documental</th><td>Cuándo revisaste la fuente de una ficha. No certifica su actividad actual.</td></tr></tbody></table></div>
       <p class="guide-note">En los campos que lo permiten, escribe <code>2024</code>, <code>2024-11</code> o <code>2024-11-11</code> según lo que se conozca. No completes un día o mes por suposición.</p>
+      <p>En experiencias, usa <strong>Qué representa esta fecha</strong> para distinguir, por ejemplo, <em>Primera versión documentada</em> de <em>Fecha de publicación</em>. Usa <strong>Año o periodo documentado</strong> si la fuente expresa un intervalo; no supongas que la actividad continúa hasta hoy.</p>
+      <h3>Hitos de la experiencia, no del trabajo editorial</h3>
+      <p>Un solo año conocido se muestra como fecha. Dos o más acontecimientos documentados pueden formar una cronología: cada hito tiene título, fecha con la precisión conocida y una descripción opcional. No inventes eventos intermedios para completarla.</p>
+      <p>La publicación de una fuente y la revisión de una ficha son fechas documentales o editoriales: no las conviertas en hitos históricos, inauguraciones o fechas de inicio. Si solo conoces la fecha del artículo, identifícala como publicación y conserva esa distinción.</p>
       <p>Al recuperar una noticia antigua, activa <strong>Es una publicación histórica</strong> y conserva su fecha original. Usa <strong>Actualización</strong> para identificar la nueva edición. En la página institucional, presenta servicios, voluntariado y colaboraciones históricas como antecedentes hasta confirmar que siguen vigentes.</p>
     </section>
 
     <section id="revision" class="guide-final" aria-labelledby="revision-titulo">
-      <p class="guide-eyebrow">05 · Revisa antes de compartir</p>
+      <p class="guide-eyebrow">06 · Revisa antes de compartir</p>
       <h2 id="revision-titulo">Una última mirada</h2>
-      <ul class="guide-checklist"><li>El título y el resumen explican de qué trata la entrada.</li><li>El relato distingue hechos históricos de información vigente.</li><li>Las fechas, la fuente y los enlaces están completos y son coherentes.</li><li>La imagen tiene permiso, descripción y crédito; se ve bien en móvil.</li><li>El enlace abre la noticia o ficha completa y permite volver al listado.</li><li>Revisaste la versión generada después del guardado; no solo la vista previa.</li></ul>
+      <ul class="guide-checklist"><li>El título y el resumen explican de qué trata la entrada sin repetir el relato.</li><li>El relato distingue hechos históricos de información vigente.</li><li>El territorio está respaldado; no se presenta como una sede ni como un punto del mapa de emprendimientos.</li><li>Las fechas, las fuentes y los enlaces son coherentes; los hitos son acontecimientos documentados.</li><li>Cada imagen tiene permiso, descripción y crédito; se ve bien en móvil.</li><li>Los campos opcionales sin información quedan vacíos y no generan secciones vacías en la ficha.</li><li>El enlace abre la noticia o ficha completa y permite volver al listado.</li><li>Revisaste la versión generada después del guardado; no solo la vista previa.</li></ul>
       <p>Si una validación falla o el editor no permite iniciar sesión, conserva el texto en un documento local y comunica el mensaje al responsable del sitio. No des por publicado el contenido hasta comprobarlo.</p>
       <a class="guide-button" href="/admin/">Ir al editor <span aria-hidden="true">→</span></a>
     </section>

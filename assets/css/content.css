@@ -5,6 +5,26 @@
 .content-page .content-heading h1 { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: clamp(2.3rem, 5vw, 4.4rem); line-height: 1.12; margin: 1rem 0 1.4rem; }
 .content-page .content-heading > p { line-height: 1.75; margin: .8rem 0; }
 .content-page .content-heading .section-tag { display: block; width: fit-content; margin-top: 2rem; }
+.content-page .experience-article .content-heading { border-bottom: 1px solid #bdae91; padding-bottom: 2rem; }
+.experience-article .content-facts { gap: 1rem 2.5rem; }
+.experience-article .content-facts > div { max-width: 100%; }
+.experience-article .content-facts dt { max-width: 32ch; line-height: 1.6; text-transform: none; letter-spacing: 0; }
+.experience-article .content-facts dd { font-size: 1.15rem; }
+.experience-context { border-left: 3px solid var(--gold); padding: .3rem 0 .3rem 1.5rem; margin: 2rem 0; line-height: 1.8; }
+.experience-context h2 { font-size: 1.15rem; margin-bottom: .5rem; }
+.experience-scope { color: #554435; font-size: .95rem; }
+.experience-related { border-block: 1px solid #bdae91; margin-top: 2rem; padding: 1.5rem 0; line-height: 1.8; }
+.experience-related h2 { font-size: 1rem; font-weight: 400; color: #554435; }
+.experience-related a { font-size: 1.2rem; font-weight: 600; }
+.experience-milestones, .experience-gallery { margin: 2.5rem 0; }
+.experience-milestones > h2, .experience-gallery > h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: 2rem; font-weight: 400; margin-bottom: 1rem; }
+.experience-milestones ol { list-style: none; border-left: 2px solid var(--sage); margin-left: .5rem; padding: 0 0 0 1.5rem; }
+.experience-milestones li { position: relative; padding: .5rem 0 1.5rem; line-height: 1.7; }
+.experience-milestones li::before { content: ''; position: absolute; width: .7rem; height: .7rem; background: var(--sage); border-radius: 50%; top: .9rem; left: -1.9rem; }
+.experience-milestones time { color: #554435; }
+.experience-milestones h3 { font-size: 1.15rem; }
+.content-sources li { margin: .8rem 0; }
+.material-credit { color: #554435; font-size: .9rem; }
 .content-page a { text-underline-offset: .2em; }
 .content-main a { color: var(--sage); }
 .content-back { display: inline-block; font-weight: 600; margin: 0 0 1.2rem; }
@@ -17,6 +37,7 @@
 .content-card p { line-height: 1.65; margin-bottom: 1rem; }
 .content-card .section-tag { font-size: .7rem; padding-left: 0; }
 .content-card .section-tag::before { content: none; }
+.content-card .content-territory { font-size: .88rem; font-weight: 600; color: var(--sage); margin-bottom: .6rem; }
 .content-read { display: inline-block; font-weight: 600; margin-top: .5rem; }
 .content-territory, .content-date { font-size: .92rem; color: #554435; line-height: 1.6; }
 .content-article { max-width: 820px; margin: 0 auto; }

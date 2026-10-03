@@ -4,11 +4,20 @@ title: "KilomboApp"
 excerpt: "Documentación digital vinculada al Kilombo Yumma para conservar la memoria y facilitar la transmisión de saberes ancestrales."
 initiative: "KilomboApp"
 territory: "Bogotá"
+municipality: "Bogotá"
+location_type: territorial
+context: "Bogotá es el contexto de la iniciativa territorial Kilombo Yumma; la herramienta digital no tiene una ubicación física propia documentada."
 reviewed: true
 reviewed_at: "2026-10-02"
 source: "Documento institucional pagina a 19 de febrero.docx, apartado Innovación para la conservación, párrafos no vacíos 106–107, y sección Nuestras iniciativas (publicación indicada: 21 de agosto de 2024), párrafos 129–135; compilación: 19 de febrero de 2025."
 status: published
 public_precision: none
+related_initiative:
+  label: "Kilombo Yumma: la iniciativa territorial"
+  url: "/experiencias/kilombo-yumma/"
+sources:
+  - label: "Artículo de AFNEMO sobre saberes ancestrales y biodiversidad"
+    url: "/noticias/2024-11-26-saberes-ancestrales-biodiversidad/"
 materials:
   - label: "Kilombo App, la apuesta por digitalizar la medicina ancestral (22 de julio de 2023)"
     url: "https://www.elespectador.com/responsabilidad-social/impacto-mujer/kilombo-app-la-apuesta-por-digitalizar-la-medicina-ancestral/"
@@ -29,9 +38,3 @@ Esta iniciativa reúne procesos comunitarios y documentación digital. El artíc
 Bogotá aparece como contexto del Kilombo Yumma al que se vincula la iniciativa. KilomboApp no se representa como una sede física ni tiene un punto geográfico independiente en esta ficha.
 
 El documento no establece una fecha de lanzamiento. La disponibilidad actual de la aplicación, su acceso y sus condiciones de uso requieren confirmación antes de ofrecerlos como un servicio activo.
-
-## Fuente y materiales
-
-Síntesis de los apartados «Innovación para la conservación» y «Nuestras iniciativas» del Word institucional compilado el 19 de febrero de 2025. Revisión editorial: 2 de octubre de 2026.
-
-[Leer el artículo de archivo sobre saberes ancestrales y biodiversidad](/noticias/2024-11-26-saberes-ancestrales-biodiversidad/).
