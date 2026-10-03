@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadCollection, loadInstitutional, inspectImage } from './content.mjs';
+import { prepareCmsConfig, prepareAdminHtml } from './cms-config.mjs';
 import { createPageRenderer, newsList, newsDetail, experiencesList, experienceExplorer, experienceDetail, institutionalDetail } from './pages.mjs';
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -11,10 +12,31 @@ const codeAssets = [
   'assets/css/main.css', 'assets/css/nav.css', 'assets/css/hero.css', 'assets/css/sections.css', 'assets/css/responsive.css', 'assets/css/content.css',
   'assets/js/nav.js', 'assets/js/animations.js', 'assets/js/news.js', 'assets/js/experiences.js', 'assets/js/territory-map.js'
 ];
-const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
+const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/validation.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
 const existingPublicImages = new Set(['/assets/images/hero-image.webp']);
 
-export async function build(root = sourceRoot) {
+function validateEditorialLinks(records, pages) {
+  for (const record of records) {
+    const links = [
+      ...Array.from(record.html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g), match => match[1]),
+      ...(record.materials || []).map(item => item.url),
+      ...(record.videos || []).map(item => item.url),
+      ...(record.sources || []).map(item => item.url),
+      record.related_initiative?.url
+    ];
+    for (const href of new Set(links.filter(value => value && /^(?:\/|#)/.test(value)))) {
+      const target = new URL(href, `https://afnemo.co${record.url}`);
+      const filename = target.pathname === '/' ? 'index.html' : `${target.pathname.slice(1)}index.html`;
+      const html = pages.get(filename);
+      if (!html) throw new Error(`${record.url}: enlace interno sin página publicada: ${href}`);
+      if (target.hash && !Array.from(html.matchAll(/\bid="([^"]+)"/g), match => match[1]).includes(target.hash.slice(1))) {
+        throw new Error(`${record.url}: ancla interna inexistente: ${href}`);
+      }
+    }
+  }
+}
+
+export async function build(root = sourceRoot, { env = {} } = {}) {
   root = path.resolve(root);
   const out = path.resolve(root, 'dist');
   if (path.dirname(out) !== root || path.basename(out) !== 'dist') throw new Error('Directorio de salida no válido');
@@ -51,6 +73,7 @@ export async function build(root = sourceRoot) {
   for (const record of news) pages.set(`noticias/${record.slug}/index.html`, page({ title: record.title, description: record.excerpt, url: record.url, content: newsDetail(record) }));
   for (const record of experiences) pages.set(`experiencias/${record.slug}/index.html`, page({ title: record.title, description: record.excerpt, url: record.url, content: experienceDetail(record) }));
   if (institutional) pages.set('asociacion/index.html', page({ title: institutional.title, description: institutional.excerpt, url: institutional.url, content: institutionalDetail(institutional) }));
+  validateEditorialLinks([...news, ...experiences, ...(institutional ? [institutional] : [])], pages);
   const publicAssets = new Map();
   const versions = new Map();
   for (const asset of codeAssets) {
@@ -77,7 +100,12 @@ export async function build(root = sourceRoot) {
   for (const image of referencedImages) {
     publicAssets.set(image.slice(1), (await readImage(image)).bytes);
   }
-  for (const file of staticFiles) publicAssets.set(file, await fs.readFile(path.join(root, file)));
+  for (const file of staticFiles) {
+    const bytes = await fs.readFile(path.join(root, file));
+    if (file === 'admin/config.yml') publicAssets.set(file, prepareCmsConfig(bytes.toString('utf8'), env));
+    else if (file === 'admin/index.html') publicAssets.set(file, prepareAdminHtml(bytes.toString('utf8'), env));
+    else publicAssets.set(file, bytes);
+  }
   // Validate everything before replacing the previous local output.
   await fs.rm(out, { recursive: true, force: true });
   const write = async (file, content) => {
@@ -95,5 +123,5 @@ export async function build(root = sourceRoot) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  build().then(result => console.log(`Build listo: ${result.pages} páginas, ${result.news} noticias, ${result.experiences} experiencias, ${result.images} imágenes en dist/`)).catch(error => { console.error(error.message); process.exitCode = 1; });
+  build(sourceRoot, { env: process.env }).then(result => console.log(`Build listo: ${result.pages} páginas, ${result.news} noticias, ${result.experiences} experiencias, ${result.images} imágenes en dist/`)).catch(error => { console.error(error.message); process.exitCode = 1; });
 }

@@ -9,6 +9,7 @@
   function uniqueText(values) { return values.filter(function (value, index) { return value && values.indexOf(value) === index; }); }
   function imageFile(value) { var path = text(value); return path.startsWith('/') ? path : '/assets/images/noticias/' + path; }
   function linkUrl(value) {
+    if (window.AfnemoEditorial) return window.AfnemoEditorial.linkUrl(value);
     var url = text(value);
     if (/[\s\\\u0000-\u001f]/.test(url)) return '';
     if (/^#[a-zA-Z0-9_-]+$/.test(url) || /^\/asociacion\/(?:#[a-zA-Z0-9_-]+)?$/.test(url) || /^\/(?:noticias|experiencias)\/(?:[a-z0-9-]+\/)?(?:#[a-zA-Z0-9_-]+)?$/.test(url) || /^\/#(?:[a-zA-Z0-9_-]+)$/.test(url) || url === '/') return url;
@@ -16,6 +17,7 @@
   }
   function linkedLabel(item) { return item.url ? h('a', { href: item.url, rel: 'noopener noreferrer' }, item.label) : item.label; }
   function validDate(value, partial) {
+    if (window.AfnemoEditorial) return window.AfnemoEditorial.validDate(value, partial);
     var date = text(value);
     if (partial && /^\d{4}$/.test(date)) return true;
     if (partial && /^\d{4}-(0[1-9]|1[0-2])$/.test(date)) return true;
@@ -135,7 +137,7 @@
       return h('article', { className: 'afnemo-preview' },
         h('aside', { className: 'afnemo-preview-notice' },
           h('strong', {}, 'Vista previa de tu entrada'),
-          h('p', {}, 'Esta vista no guarda ni publica. Comprueba la versión generada después de guardar en el editor.'),
+          h('p', {}, 'Esta vista no guarda ni publica. El formulario comprueba fechas, enlaces y permisos de imagen antes de guardar. Comprueba la versión generada después de guardar en el editor.'),
           h('a', { href: '/admin/guia.html', target: '_blank', rel: 'noopener noreferrer' }, 'Consultar la guía para publicar ↗')
         ),
         h('p', { className: 'afnemo-preview-meta' }, published ? 'Seleccionada para mostrarse después de guardar y generar el sitio.' : 'Borrador: no se mostrará en el sitio generado. El contenido guardado sigue en un repositorio público.'),

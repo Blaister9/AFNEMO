@@ -1,5 +1,62 @@
 # AFNEMO
 
+## Validación del administrador · 3 de octubre de 2026
+
+Esta sección actualiza el estado del CMS de las entregas históricas descritas más abajo. Base limpia `a8e9ac3`, en `codex/mejoras-contenido-recorridos`, con los cinco commits anteriores intactos. El diseño y los contenidos territoriales aprobados se conservan.
+
+**Flujo comprobado en archivos y panel del proveedor:** editor → `/admin/` → Netlify Identity → Git Gateway → `Blaister9/AFNEMO` → archivos de `content/` e imágenes de `assets/images/noticias/` → `npm run build` → `dist/` → Netlify. Las páginas, listados, filtros, sitemap y feeds se generan con el contenido de la misma revisión. Los visitantes no consultan GitHub para leerlo.
+
+Decap 3.16.3 está fijado por versión. `publish_mode: simple` guarda directamente; no existe una cola `editorial_workflow`. La fuente definitiva conserva `backend.name: git-gateway` y `backend.branch: main`. Los campos `published` y `status/reviewed` controlan la salida pública, no la privacidad de archivos e historial. Las imágenes se suben en una operación independiente del guardado de la entrada.
+
+**Infraestructura real, inspeccionada con la sesión existente:** proyecto Netlify `spectacular-daifuku-0575d9`, repositorio correcto, Identity habilitado, registro por invitación y confirmación de correo, Git Gateway habilitado y sin filtro de roles. No se revelaron ni modificaron credenciales. El CMS pidió un inicio de sesión de Identity; la sesión del panel Netlify no autentica al editor. **Autenticación editorial remota: no validada.** Ver el formulario de acceso y comprobar el aprovisionamiento no demuestra lectura/escritura autorizada.
+
+**Preview:** [PR de revisión en borrador](https://github.com/Blaister9/AFNEMO/pull/1) y [Deploy Preview del mismo proyecto](https://deploy-preview-1--spectacular-daifuku-0575d9.netlify.app/). El panel confirmó producción en `main`, branch deploys desactivados y Deploy Previews activadas para PR. Se utiliza ese mecanismo existente; no se cambian DNS, dominio ni configuración de producción. Cada push actualiza la preview cuando termina su compilación. La configuración del panel aún refleja la entrega productiva anterior (sin comando, publicación de la raíz); el `netlify.toml` de esta rama define `npm run build` y `dist` y tiene prioridad para su preview.
+
+En contextos Netlify `deploy-preview`/`branch-deploy`, únicamente el archivo **generado** `dist/admin/config.yml` utiliza `HEAD` como rama de revisión y `DEPLOY_PRIME_URL` como enlace del sitio. La compilación falla si falta una rama segura o apunta a `main`. La configuración fuente y el build de producción permanecen en `main`. Identity/Gateway conservan los endpoints del mismo origen y la CSP no cambia. El administrador incluye un aviso visible del destino de los guardados.
+
+### Colecciones y reglas editoriales
+
+| Colección | Destino y publicación | Campos comprobados |
+| --- | --- | --- |
+| Noticias y memoria | `content/noticias/`, enlace por fecha/título, `published: true` | Título, resumen, relato, fecha de publicación; evento, fuente y actualización separados; categoría/fuente opcionales; imagen opcional con permiso, alt y crédito |
+| Experiencias AFNEMO | `content/experiencias/`, enlace estable por `id`, `status: published` y `reviewed: true` | Iniciativa, fuente y revisión; territorio, municipio, departamento, país y nivel de ubicación opcionales; contexto, periodo, fecha parcial, hitos, fuentes, materiales, video, galería e iniciativa relacionada editables |
+| Asociación y trayectoria | `content/institucional/asociacion.md`, `published: true` | Título, resumen, fuente, fecha de revisión y relato |
+
+No existe una colección territorial adicional: los campos territoriales pertenecen a las experiencias. El mapa ArcGIS continúa siendo un recurso externo independiente. No se solicitan coordenadas. Los grupos adicionales están colapsados y la compatibilidad territorial anterior permanece oculta.
+
+`admin/validation.js` registra `preSave`: comprueba campos vacíos, fechas que existen, opciones controladas, enlaces permitidos y permiso/alt/crédito de cada imagen seleccionada. El límite de 20 MB se configura por campo de imagen; el build decodifica los archivos y aplica también el máximo de 40 megapíxeles. JPG, PNG, WebP y AVIF usan rutas locales seguras; no se admiten SVG ni rutas del equipo. El build publica solamente medios autorizados referenciados, con dimensiones, texto alternativo, carga diferida y estilos adaptables. Los originales y fotografías de pruebas históricas no publicadas quedan fuera de `dist`.
+
+El relato tiene HTML desactivado/saneado y las imágenes se incorporan mediante sus campos. El build ahora rechaza enlaces editoriales a páginas o anclas inexistentes antes de sustituir la última salida válida. La [guía para AFNEMO](admin/guia.html) explica acceso invitado, creación/corrección, subida/selección de fotos, fuentes/créditos, territorio y guardado, con las etiquetas reales del editor. Advierte que retirar una entrada requiere corregir sus enlaces entrantes.
+
+### Reproducir la validación
+
+```powershell
+npm ci
+npm test
+npm run build
+npm run preview
+# En otra terminal, con dist servido:
+npm run test:browser
+npm run test:cms
+npm audit --omit=optional
+```
+
+`test:cms` usa Decap real y su proxy oficial `decap-server` sobre una copia temporal permitida de esta rama; no copia `.git`, no usa credenciales y no puede escribir en GitHub. `local_backend` existe solamente en la respuesta del servidor de prueba, nunca en la configuración publicada. Los servidores escuchan en loopback, se cierran al terminar y la copia se elimina incluso ante fallos. Las pruebas de parsing/build realizan también creación, segunda edición y eliminación en copias temporales; comprueban que la salida final coincide con la inicial. Esto comprueba el recorrido local del editor y el generador, **no** sustituye la autenticación ni el guardado por Git Gateway.
+
+Las evidencias se guardan fuera del sitio mediante `AFNEMO_EVIDENCE`/`AFNEMO_EVIDENCE_DIR`. Se cubren 13 rutas públicas/guía a 1440, 390 y 320 píxeles, `/admin/` en escritorio/móvil, las cinco experiencias, 52 destinos internos, imágenes decodificadas, recarga directa, filtros, teclado, ausencia de consultas de contenido a GitHub y CSP. ArcGIS y el chat se aíslan en las pruebas automáticas; sus fallos simulados no son fallos propios del sitio.
+
+**Resultado del slice:** `npm test` 42/42; `npm run build` 13 páginas, 3 noticias, 5 experiencias y 2 imágenes; `npm run test:browser` aprobado. Se corrigió una carrera del propio test territorial al cerrar peticiones de imágenes en vuelo; el sitio territorial no cambió. El harness CMS completó 14 operaciones reales: abrió una noticia histórica, rechazó entradas incompletas, creó una noticia y subió/seleccionó una imagen con nombre normalizado, bloqueó su guardado sin alt/crédito, guardó/reabrió/editó, verificó página/listado/imagen tras build y recarga, y eliminó la noticia. Creó una experiencia sin foto ni territorio, añadió Bogotá y su nivel de ubicación, verificó ficha/listado/filtro y la eliminó. Editó la página institucional, comprobó su build y restauró el texto desde el CMS. Eliminó la fotografía desde la biblioteca; la reconstrucción final devolvió 404 para las dos entradas y el medio temporales y recuperó las 3 noticias/5 experiencias iniciales. Todo ocurrió en la copia local desechable.
+
+Consola del recorrido válido: sin errores inesperados. Al enviar deliberadamente campos inválidos, Decap 3.16.3 emite rechazos de promesas (`undefined`/`#<Object>`) además de su mensaje de validación; se registran por separado y se comprueba que no se creó el archivo. No se declaran como una autenticación ni publicación remota exitosa. Las configuraciones inválidas de biblioteca y la fila vacía automática de galería se detectaron con la UI real y quedaron corregidas antes de la entrega.
+
+**Auditoría de dependencias:** el proxy oficial más reciente disponible, `decap-server@3.11.3`, arrastra `@hapi/joi@17.1.1`: dos avisos bajos (uno directo y otro transitivo), [GHSA-6w3j-5fw6-r9vr](https://github.com/advisories/GHSA-6w3j-5fw6-r9vr), sin corrección disponible según `npm audit`. Solo se usa en el harness local y no se copia a `dist`; la auditoría no se declara limpia ni se oculta el resultado. Se conserva este límite explícito para mantener una prueba reproducible del proxy oficial.
+
+### Cierre pendiente de autenticación remota
+
+Un editor invitado debe abrir el [administrador de revisión](https://deploy-preview-1--spectacular-daifuku-0575d9.netlify.app/admin/), comprobar el aviso de revisión e iniciar sesión personalmente en Netlify Identity. No debe enviar contraseñas, tokens ni capturas con datos de sesión. Si no tiene acceso, el responsable debe invitarlo desde Identity del proyecto y el editor confirmar su correo. No hay un cambio adicional de proveedor identificado como necesario.
+
+Tras autenticarse falta demostrar lectura, creación, guardado, imagen, segunda edición y eliminación **por Git Gateway en la rama de revisión**, verificar el nuevo despliegue y retirar todas las pruebas. La existencia/configuración del servicio está comprobada; la vigencia de su autorización GitHub y los permisos efectivos de escritura siguen sin demostrarse mientras no haya sesión editorial. Producción, `main` y los commits anteriores no se modifican en este slice.
+
 Sitio existente en HTML, CSS y JavaScript, con Decap CMS (Git Gateway / Netlify Identity) y visor ArcGIS externo. Se conserva la identidad visual y los proveedores actuales.
 
 ## Primera entrega · 2 de octubre de 2026

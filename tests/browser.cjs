@@ -6,6 +6,43 @@ const base = process.env.AFNEMO_BASE_URL || 'http://127.0.0.1:4173';
 const evidence = process.env.AFNEMO_EVIDENCE || process.env.AFNEMO_EVIDENCE_DIR || path.resolve('test-results');
 fs.mkdirSync(evidence, { recursive: true });
 const csp = fs.readFileSync('netlify.toml', 'utf8').match(/Content-Security-Policy = "([^"]+)"/)[1];
+async function verifyAdmin(browser, captures) {
+ // Exercise the real shipped Decap bundle and login screen. No credential input,
+ // authentication claim or remote content write follows from this smoke check.
+ const context = await browser.newContext({ reducedMotion: 'reduce' });
+ const findings = { viewports: [], authentication: 'not validated', ownConsoleErrors: [], externalConsoleErrors: [], pageErrors: [], externalFailures: [] };
+ await context.route(base + '/**', async route => {
+  const response = await route.fetch();
+  await route.fulfill({ response, headers: { ...response.headers(), 'content-security-policy': csp } });
+ });
+ const page = await context.newPage();
+ page.on('pageerror', error => findings.pageErrors.push(error.message));
+ page.on('console', message => {
+  if (message.type() !== 'error') return;
+  const url = message.location().url || '';
+  (url.startsWith(base) || !url ? findings.ownConsoleErrors : findings.externalConsoleErrors).push({ url, message: message.text() });
+ });
+ page.on('requestfailed', request => {
+  if (!request.url().startsWith(base)) findings.externalFailures.push({ url: request.url(), error: request.failure()?.errorText });
+ });
+ try {
+  for (const [screen, width, height] of [['desktop', 1440, 1000], ['mobile', 390, 844]]) {
+   await page.setViewportSize({ width, height });
+   assert.equal((await page.goto(base + '/admin/', { waitUntil: 'domcontentloaded' })).status(), 200);
+   await page.getByRole('button', { name: /Iniciar sesión con Netlify Identity/i }).waitFor({ timeout: 45000 });
+   assert.equal(await page.locator('.admin-helpbar a[href="/admin/guia.html"]').isVisible(), true);
+   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `/admin/: ${screen} overflow`);
+   assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex, nofollow');
+   const filename = `after-${screen}-admin-login.png`;
+   await page.screenshot({ path: path.join(evidence, filename) });
+   captures.push(filename);
+   findings.viewports.push({ screen, loginVisible: true, overflow: false });
+  }
+  assert.deepEqual(findings.ownConsoleErrors, [], '/admin/: no first-party console errors');
+  assert.deepEqual(findings.pageErrors, [], '/admin/: no uncaught JavaScript errors');
+  return findings;
+ } finally { await context.close(); }
+}
 async function verifyImages(page, route) {
  // Request lazy images too: checking only already-complete images can miss failures.
  const results = await page.locator('img').evaluateAll(async images => Promise.all(images.map(async image => {
@@ -36,9 +73,13 @@ async function verifyImages(page, route) {
  await context.route('https://identity.netlify.com/**', r => r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }));
  await context.route('https://fonts.googleapis.com/**', r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
  const page = await context.newPage();
- const errors = [], requests = [], ownConsoleErrors = [];
+ const errors = [], requests = [], ownConsoleErrors = [], externalConsoleErrors = [];
  page.on('pageerror', e => errors.push(e.message));
- page.on('console', m => { if(m.type()==='error' && (m.location().url||'').startsWith(base)) ownConsoleErrors.push(m.text()); });
+ page.on('console', m => {
+  if(m.type()!=='error') return;
+  const url=m.location().url||'';
+  (url.startsWith(base)||!url ? ownConsoleErrors : externalConsoleErrors).push({url,message:m.text()});
+ });
  page.on('request', r => requests.push(r.url()));
  const news = await (await context.request.get(base + '/data/noticias.json')).json();
  const experiences = await (await context.request.get(base + '/data/experiencias.json')).json();
@@ -165,7 +206,8 @@ async function verifyImages(page, route) {
  assert.equal(await staticPage.locator('[data-experience]:visible').count(), experiences.length);
  assert.equal(await staticPage.locator('.nav-links').isVisible(),true);
  await noJS.close();
- fs.writeFileSync(path.join(evidence,'browser-results.json'),JSON.stringify({routes:routes.length,viewports:3,news:news.length,experiences:experiences.length,localLinks:links.size,pageErrors:errors,githubRequests:0,captures,externalServices:'Map failure simulated; CMS collection links checked as routes only. CMS login and Worker backend not authenticated or exercised.'},null,2));
- console.log(`PASS browser: ${routes.length} routes × 3 viewports, ${news.length} news, ${experiences.length} experiences, ${links.size} internal links, institution, editorial guide, decoded images, filters, reload, drafts, CSP, news retry, no-JS, keyboard; 0 page errors.`);
+ const admin = await verifyAdmin(browser, captures);
+ fs.writeFileSync(path.join(evidence,'browser-results.json'),JSON.stringify({routes:routes.length,viewports:3,news:news.length,experiences:experiences.length,localLinks:links.size,pageErrors:errors,githubRequests:0,captures,externalConsoleErrors,admin,externalServices:'Map failure simulated; real Decap login screen checked on desktop/mobile. Remote CMS authentication and Worker backend were not exercised.'},null,2));
+ console.log(`PASS browser: ${routes.length} public/guide routes × 3 viewports; /admin/ × desktop/mobile (authentication not validated); ${news.length} news, ${experiences.length} experiences, ${links.size} internal links, institution, editorial guide, decoded images, filters, reload, drafts, CSP, news retry, no-JS, keyboard; 0 page errors.`);
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

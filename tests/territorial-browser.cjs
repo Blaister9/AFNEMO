@@ -103,6 +103,9 @@ async function contextWithFixtures(browser, options = {}, handler) {
   await context.route('**/*', async route => {
     const url = new URL(route.request().url());
     if (url.origin === origin) {
+      // CSP belongs to the document. Proxying every image creates a second request
+      // that can outlive navigation/teardown and race with an already handled route.
+      if (route.request().resourceType() !== 'document') return route.continue();
       const response = await route.fetch();
       return route.fulfill({ response, headers: { ...response.headers(), 'content-security-policy': csp } });
     }
@@ -200,6 +203,7 @@ async function contextWithFixtures(browser, options = {}, handler) {
     assert.match(guide, /hitos/i);
     assert.match(guide, /San Basilio de Palenque/);
     assert.deepEqual(errors, []);
+    await context.unrouteAll({ behavior: 'wait' });
     await context.close();
 
     // A successful HTML load, HTTP error page, network abort and delayed response
@@ -278,6 +282,7 @@ async function contextWithFixtures(browser, options = {}, handler) {
         assert.equal(new URL(target.url()).pathname.startsWith('/experiencias/'), true, 'stories still navigate after external failure');
         assert.deepEqual(pageErrors, []);
         results.push({ screen, scenario, observedState, externalRequests: requests, pageErrors });
+        await current.unrouteAll({ behavior: 'wait' });
         await current.close();
       }
     }
@@ -299,6 +304,9 @@ async function contextWithFixtures(browser, options = {}, handler) {
       await fallback.locator('.content-back').first().click();
       assert.equal(new URL(fallback.url()).pathname, '/experiencias/');
     }
+    // Back navigation can still be fetching an image when assertions finish.
+    // Drain route callbacks before disposing their request context.
+    await noJS.unrouteAll({ behavior: 'wait' });
     await noJS.close();
     fs.writeFileSync(path.join(evidence, 'territorial-browser-results.json'), JSON.stringify({ experiences: experiences.length, documentedTerritories, scenarios: results, captures, externalServices: 'All ArcGIS responses were fixtures. HTTP 200/503 and network failure are not remote availability checks; iframe load cannot establish cross-origin map health. No CMS login, remote map edit or dataset copy was performed.' }, null, 2));
     console.log('PASS territorial: five experiences with documented territories; independent keyboard filters, empty state, reload/Back, static details, CMS/guide, 3 widths × 4 simulated external scenarios, responsive iframe, retry/close and no-JS; 0 page errors.');
