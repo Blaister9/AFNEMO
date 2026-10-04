@@ -18,7 +18,6 @@
   .programs-grid { grid-template-columns: 1fr 1fr; }
   .news-grid { grid-template-columns: 1fr 1fr; }
   .news-card:first-child { grid-column: span 2; }
-  .team-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 
@@ -31,9 +30,7 @@
   .programs-grid { grid-template-columns: 1fr; }
   .news-grid { grid-template-columns: 1fr; }
   .news-card:first-child { grid-column: span 1; }
-  .team-grid { grid-template-columns: 1fr 1fr; }
   .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .newsletter-form { flex-direction: column; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .hero-actions a { max-width: 100%; }
   .scroll-indicator { display: none; }
@@ -52,7 +49,6 @@
   #chat-bubble { right: 1.2rem; bottom: 1.2rem; }
   .stats-bar { padding: 2rem 1rem; gap: 1rem; }
   .stat-item { padding: 0.5rem; }
-  .team-grid { grid-template-columns: 1fr; }
 }
 
 /* Floating controls remain below navigation and fit short viewports. */

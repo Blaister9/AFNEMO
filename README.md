@@ -69,6 +69,10 @@ La única fotografía nueva publicada del paquete es `assets/images/experiencias
 
 ZIP, DOCX, falsos JPEG/HTML, imágenes incrustadas sin procedencia, duplicado `a-1.jpg`/contacto y fotografía de contacto con dominio desactualizado quedan fuera de `dist`. Tampoco se publican las fotografías Screenshot y WhatsApp, ni imágenes de noticias de prueba. Los originales, extracciones, capturas y resultados de auditoría permanecen fuera del repositorio. `.gitignore` excluye `dist`, dependencias, pruebas generadas, documentos originales y archivos de entorno.
 
+La auditoría completa de `main` a la rama de revisión retiró del árbol final tres entradas ficticias heredadas y sus dos imágenes, la copia PNG del banner ya sustituida por WebP, estilos de componentes retirados y exportaciones globales del chat sin consumidores. La configuración local `.claude/settings.local.json` dejó de estar versionada y permanece ignorada. Las pruebas de publicación crean su carpeta multimedia en la copia temporal, sin depender de imágenes de prueba del repositorio. No cambian los relatos documentales, las dependencias ni la infraestructura.
+
+El 04/10/2026, la instalación limpia, las 42 pruebas, el build y las pruebas de navegador pasaron: 13 páginas generadas, tres noticias, cinco experiencias, 53 enlaces internos válidos y ningún error de JavaScript. Los dos avisos bajos del proxy siguen sin corrección compatible y `npm audit --omit=optional` conserva código 1. Las 20 URLs de las fuentes recientes F1–F16 respondieron HTTP 200; el dominio histórico Somos Abya Yala continúa inaccesible por DNS. Se conservan sus referencias originales del boletín, sin inventar un enlace sustituto. La autenticación remota sigue pendiente.
+
 ## Pendientes para entrega / validación institucional
 
 ### Autenticación / infraestructura

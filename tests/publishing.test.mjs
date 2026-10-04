@@ -33,6 +33,7 @@ async function isolatedProject(t) {
     await fs.cp(path.join(project, directory), path.join(root, directory), { recursive: true });
   }
   for (const file of ['index.html', 'CNAME', '_redirects']) await fs.copyFile(path.join(project, file), path.join(root, file));
+  await fs.mkdir(path.join(root, 'assets/images/noticias'), { recursive: true });
   return root;
 }
 

@@ -19,7 +19,7 @@
       });
     }, { threshold: 0.1 });
     // Content stays visible even if the observer never delivers an entry.
-    document.querySelectorAll('.stat-item, .program-card, .news-card, .team-card').forEach(function (el) {
+    document.querySelectorAll('.stat-item, .program-card, .news-card').forEach(function (el) {
       observer.observe(el);
     });
   }
@@ -235,10 +235,6 @@
       sendMessage();
     }
   }
-
-  window.toggleChat = toggleChat;
-  window.sendMessage = sendMessage;
-  window.handleKey = handleKey;
 
   function init() {
     initAnimations();
