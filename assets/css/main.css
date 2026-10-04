@@ -23,6 +23,13 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid #147eaa; outline-offset: 5px; }
+.skip-link { position: fixed; top: .5rem; left: .5rem; z-index: 12000; padding: .8rem 1.2rem; color: var(--warm-black); background: white; transform: translateY(-180%); }
+.skip-link:focus { transform: none; }
+img { max-width: 100%; height: auto; }
+button, input, select { font: inherit; }
+a { text-underline-offset: .2em; }
 html {
   scroll-behavior: smooth;
   /* Compensa la navbar fija (≈80px) al navegar a anclas */
@@ -109,7 +116,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--earth-red);
+  color: #973813;
   margin-bottom: 1rem;
   position: relative;
   padding-left: 2rem;

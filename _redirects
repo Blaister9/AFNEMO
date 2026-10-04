@@ -2,3 +2,4 @@ http://afnemo.co/*  https://afnemo.co/:splat  301!
 http://www.afnemo.co/*  https://afnemo.co/:splat  301!
 https://www.afnemo.co/*  https://afnemo.co/:splat  301!
 /admin  /admin/index.html  200
+/noticias/2026-10-02-memoria-museo/  /noticias/2024-06-18-memoria-museo/  301

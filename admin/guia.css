@@ -1,0 +1,91 @@
+:root { --guide-ink: #1c0a00; --guide-cream: #f0e8d5; --guide-green: #1b4d35; --guide-gold: #c8860a; --guide-muted: #625445; }
+.editor-guide, .admin-shell { margin: 0; color: var(--guide-ink); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+.editor-guide { background: var(--guide-cream); line-height: 1.65; }
+.editor-guide *, .admin-helpbar, .admin-helpbar * { box-sizing: border-box; }
+.editor-guide a { color: var(--guide-green); text-underline-offset: .22em; }
+.editor-guide a:focus-visible, .admin-helpbar a:focus-visible { outline: 3px solid #d59110; outline-offset: 5px; }
+.guide-skip { position: fixed; top: -100px; left: 12px; background: white; padding: 12px; z-index: 100; }
+.guide-skip:focus { top: 12px; }
+.guide-topbar, .admin-helpbar { background: #11180f; color: var(--guide-cream); display: flex; align-items: center; flex-wrap: wrap; gap: 1.2rem; padding: 1.1rem max(5%, calc((100vw - 1120px) / 2)); }
+.guide-topbar .guide-brand, .admin-helpbar .guide-brand { font-family: Georgia, serif; font-size: 1.65rem; letter-spacing: .08em; text-decoration: none; color: #e9ba68; }
+.guide-topbar > span { color: #ddd0b8; font-size: .86rem; }
+.guide-topbar .guide-button { margin-left: auto; }
+.guide-main { width: min(1050px, 90%); margin: auto; }
+.guide-hero { padding: 70px 0 48px; border-bottom: 1px solid #cdbc9e; }
+.guide-eyebrow { color: var(--guide-green); text-transform: uppercase; letter-spacing: .12em; font-weight: 700; font-size: .76rem; margin: 0 0 1rem; }
+.guide-hero h1 { font-family: Georgia, serif; font-size: clamp(2.8rem, 6.5vw, 5.5rem); font-weight: 400; line-height: 1.04; letter-spacing: -.035em; margin: 0 0 1.6rem; }
+.guide-hero h1 em { color: var(--guide-green); }
+.guide-lead { max-width: 680px; font-size: 1.16rem; }
+.guide-toc { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
+.guide-toc a { display: inline-block; border: 1px solid #b9aa90; padding: .45rem .85rem; border-radius: 24px; font-size: .84rem; text-decoration: none; }
+.guide-toc a:hover { background: #e2d8c2; }
+.guide-main section { padding: 48px 0; scroll-margin-top: 20px; }
+.guide-main h2 { font-family: Georgia, serif; font-size: clamp(1.9rem, 3vw, 2.6rem); font-weight: 400; line-height: 1.18; margin: 0 0 1.8rem; }
+.guide-main h3 { font-size: 1.15rem; line-height: 1.35; margin: .3rem 0 .8rem; }
+.guide-main p { margin-top: 0; }
+.guide-choice-grid, .guide-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.guide-choice-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.guide-choice { background: #fffaf0; border: 1px solid #d7c8ab; border-radius: 14px; padding: 1.8rem; }
+.guide-choice a { font-weight: 650; }
+.guide-number { display: grid; place-items: center; width: 42px; height: 42px; background: #e1e8d9; color: var(--guide-green); font-family: Georgia, serif; font-size: 1.45rem; border-radius: 50%; margin-bottom: 1.2rem; }
+.guide-small { font-size: .88rem; color: var(--guide-muted); }
+.guide-note { margin: 1.5rem 0 0; border-left: 3px solid var(--guide-gold); padding: .6rem 1.2rem; color: #594b3c; }
+.guide-steps { list-style: none; counter-reset: steps; margin: 0; padding: 0; display: grid; gap: 1.8rem; }
+.guide-steps > li { counter-increment: steps; display: grid; grid-template-columns: 44px 1fr; gap: 1rem; }
+.guide-steps > li::before { content: counter(steps); display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--guide-green); color: #fffaf0; font-weight: 700; }
+.guide-steps p { max-width: 820px; margin-bottom: .6rem; }
+.guide-callout { background: #e1e8d9; padding: 1.4rem 1.6rem; border-radius: 10px; margin: 2rem 0 0; }
+.guide-callout p { margin: 0; }
+.guide-example { background: #fffaf0; padding: 1.5rem; border: 1px solid #d7c8ab; border-radius: 12px; align-self: start; }
+.guide-territory-example { margin: 1.5rem 0 2rem; }
+.guide-territory-example p:last-child { margin-bottom: 0; }
+.guide-checklist { padding-left: 1.25rem; }
+.guide-checklist li { padding-left: .25rem; margin-bottom: .75rem; }
+.guide-checklist li::marker { color: var(--guide-green); }
+.guide-table-wrap { overflow-x: auto; border: 1px solid #cdbc9e; border-radius: 10px; }
+.guide-table-wrap table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+.guide-table-wrap caption { padding: 1rem; text-align: left; font-weight: 600; background: #fffaf0; }
+.guide-table-wrap th, .guide-table-wrap td { padding: 1rem 1.2rem; text-align: left; vertical-align: top; border-top: 1px solid #d7c8ab; }
+.guide-table-wrap thead { background: #e1e8d9; }
+.guide-table-wrap tbody th { min-width: 180px; font-size: .88rem; }
+.guide-main code { font-size: .88em; background: #e6dcc7; padding: .15em .4em; border-radius: 4px; overflow-wrap: anywhere; }
+.guide-main .guide-final { padding: 2rem; border-radius: 14px; background: #fffaf0; border: 1px solid #d7c8ab; margin: 1rem 0 4rem; }
+.guide-button { display: inline-flex; align-items: center; justify-content: center; gap: .8rem; min-height: 44px; padding: .7rem 1.2rem; background: var(--guide-green); color: white !important; border-radius: 28px; text-decoration: none; font-weight: 650; font-size: .9rem; }
+.guide-button-light { background: var(--guide-cream); color: var(--guide-ink) !important; }
+.guide-footer { background: #ded3ba; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 5%; font-size: .85rem; }
+/* The supported Decap mount stays below the helpbar. Fixed editor controls remain within this containing block. */
+.admin-shell { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+.admin-helpbar { flex: 0 0 auto; min-height: 64px; padding: .65rem 1.5rem; gap: 1rem; }
+.admin-helpbar .admin-help-title { font-size: .85rem; color: #ddd0b8; margin-right: auto; }
+.admin-helpbar a:not(.guide-brand) { font-size: .86rem; color: var(--guide-cream); padding: .5rem .15rem; text-underline-offset: .2em; }
+.admin-shell #nc-root { position: relative; flex: 1 1 auto; min-height: 0; overflow: auto; transform: translateZ(0); isolation: isolate; }
+/* Only our custom preview is styled; CMS controls are untouched. */
+.afnemo-preview { color: #1c0a00; background: #fffaf0; font-family: system-ui, sans-serif; padding: 24px; line-height: 1.7; overflow-wrap: anywhere; }
+.afnemo-preview h1 { font-family: Georgia, serif; font-size: 2.5rem; font-weight: 400; line-height: 1.15; }
+.afnemo-preview h2 { font-size: 1.4rem; line-height: 1.3; margin-top: 2rem; }
+.afnemo-preview-notice, .afnemo-preview-checks { padding: 14px 18px; border-radius: 6px; font-size: .88rem; background: #e1e8d9; }
+.afnemo-preview-checks { background: #fff0c7; }
+.afnemo-preview-checks h2 { font-size: 1rem; margin: 0 0 .5rem; }
+.afnemo-preview-checks ul { padding-left: 1.2rem; margin: 0; }
+.afnemo-preview .afnemo-preview-meta { font-size: .88rem; color: #625445; }
+.afnemo-preview-lead { font-size: 1.12rem; }
+.afnemo-preview-context { white-space: pre-line; }
+.afnemo-preview-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1.4rem; }
+.afnemo-preview .afnemo-preview-gallery figure { margin: 0; }
+.afnemo-preview-milestones { list-style: none; border-left: 2px solid #c8860a; padding-left: 1.4rem; }
+.afnemo-preview-milestones li { position: relative; margin: 0 0 1.5rem; }
+.afnemo-preview-milestones li::before { content: ''; position: absolute; top: .65rem; left: -1.75rem; width: .55rem; height: .55rem; border-radius: 50%; background: #1b4d35; }
+.afnemo-preview-milestones time { color: #625445; font-size: .88rem; }
+.afnemo-preview-milestones h3 { font-size: 1.1rem; margin: .2rem 0 .5rem; }
+.afnemo-preview-milestones p { margin: 0; }
+.afnemo-preview figure { margin: 1.5rem 0; }
+.afnemo-preview img { max-width: 100%; height: auto; display: block; border-radius: 8px; }
+.afnemo-preview figcaption { font-size: .85rem; margin-top: .5rem; color: #625445; }
+.afnemo-preview a { color: #1b4d35; }
+.afnemo-preview a:focus-visible { outline: 3px solid #d59110; outline-offset: 4px; }
+.afnemo-preview-body img { display: none; }
+@media (min-width: 641px) and (max-width: 850px) { .guide-choice-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .guide-topbar { padding: 1rem 5%; gap: .75rem; } .guide-topbar > span { display: none; } .guide-topbar .guide-brand { font-size: 1.4rem; } .guide-main { width: 89%; } .guide-hero { padding-top: 44px; } .guide-choice-grid, .guide-two-column { grid-template-columns: 1fr; } .guide-choice { padding: 1.4rem; } .guide-main section { padding: 32px 0; } .guide-main .guide-final { padding: 1.4rem; } .guide-steps > li { grid-template-columns: 34px 1fr; gap: .7rem; } .guide-steps > li::before { width: 30px; height: 30px; font-size: .85rem; } .guide-table-wrap th, .guide-table-wrap td { padding: .8rem; } .guide-table-wrap tbody th { min-width: 120px; } .admin-helpbar { padding: .5rem 1rem; gap: .6rem; } .admin-helpbar .guide-brand { font-size: 1.25rem; } .admin-helpbar .admin-help-title { display: none; } .admin-helpbar a:nth-last-child(2) { margin-left: auto; } .afnemo-preview { padding: 16px; } }
+@media (prefers-reduced-motion: no-preference) { .editor-guide { scroll-behavior: smooth; } }
+/* Context notice is part of the administrator, not the public territorial layout. */
+.cms-environment-notice { margin: 0; padding: .6rem 1rem; background: #fff5d9; color: #423213; font: 500 .85rem/1.5 system-ui, sans-serif; text-align: center; }

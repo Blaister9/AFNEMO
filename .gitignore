@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.local/
+test-results/
+playwright-report/
+*.zip
+*.docx
+*.pdf
+.env
+.env.*
+.claude/

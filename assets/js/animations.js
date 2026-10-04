@@ -7,33 +7,25 @@
 (function () {
   'use strict';
 
-  // ─── Scroll-triggered fadeUp animations ───
-  // BUG FIX: original code set opacity/transform directly before observing,
-  // which could flash unstyled content. We use CSS classes instead to keep
-  // animation state in the stylesheet and avoid FOUC.
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.style.animation = 'fadeUp 0.6s ease forwards';
-        // Stop observing once animated to avoid re-triggering
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.stat-item, .program-card, .news-card, .team-card').forEach(function (el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
+  function initAnimations() {
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reducedMotion.matches || typeof window.IntersectionObserver !== 'function') return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          if (!reducedMotion.matches) entry.target.style.animation = 'fadeUp 0.6s ease';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    // Content stays visible even if the observer never delivers an entry.
+    document.querySelectorAll('.stat-item, .program-card, .news-card').forEach(function (el) {
       observer.observe(el);
     });
-
-    // ─── Chatbot widget ───
-    initChatbot();
-  });
+  }
 
   // ─── Chatbot ───
-  // ⚠️ CAMBIA ESTA URL por la de tu Worker de Cloudflare
+  // Existing provider and request contract are deliberately preserved.
   var WORKER_URL = 'https://summer-wildflower-8156.santiagopazbedoya.workers.dev';
 
   var SYSTEM_PROMPT = 'Eres Neftalí, el asistente virtual especializado de AFNEMO (Asociación Afrocultural Neftalí Mosquera).\n\n' +
@@ -60,53 +52,106 @@
   var chatHistory = [];
   var chatOpen = false;
   var welcomeShown = false;
+  var requestPending = false;
+  var REQUEST_TIMEOUT_MS = 20000;
 
   function initChatbot() {
     var bubble = document.getElementById('chat-bubble');
     var closeBtn = document.getElementById('chat-close');
     var sendBtn = document.getElementById('chat-send');
     var chatInput = document.getElementById('chat-input');
+    var win = document.getElementById('chat-window');
+    var messages = document.getElementById('chat-messages');
+    if (!bubble || !closeBtn || !sendBtn || !chatInput || !win || !messages) return;
 
-    if (bubble) {
-      bubble.addEventListener('click', toggleChat);
-    }
-    if (closeBtn) {
-      closeBtn.addEventListener('click', toggleChat);
-    }
-    if (sendBtn) {
-      sendBtn.addEventListener('click', sendMessage);
-    }
-    if (chatInput) {
-      chatInput.addEventListener('keydown', handleKey);
+    bubble.hidden = false;
+    bubble.type = closeBtn.type = sendBtn.type = 'button';
+    bubble.setAttribute('aria-label', 'Abrir asistente Neftalí');
+    bubble.setAttribute('aria-controls', 'chat-window');
+    bubble.setAttribute('aria-expanded', 'false');
+    closeBtn.setAttribute('aria-label', 'Cerrar asistente');
+    sendBtn.setAttribute('aria-label', 'Enviar mensaje');
+    chatInput.setAttribute('aria-label', 'Mensaje para Neftalí');
+    chatInput.maxLength = 2000;
+    win.setAttribute('role', 'dialog');
+    win.setAttribute('aria-label', 'Asistente virtual Neftalí');
+    win.hidden = true;
+    win.classList.remove('open');
+    messages.setAttribute('role', 'log');
+    messages.setAttribute('aria-live', 'polite');
+    messages.setAttribute('aria-relevant', 'additions text');
+    messages.setAttribute('aria-label', 'Conversación con Neftalí');
+    setStatus('Asistente automatizado');
+
+    bubble.addEventListener('click', toggleChat);
+    closeBtn.addEventListener('click', function () { closeChat(true); });
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', handleKey);
+    win.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeChat(true);
+      }
+    });
+    document.addEventListener('afnemo:menuopen', function () { closeChat(false); });
+  }
+
+  function setStatus(text) {
+    var status = document.querySelector('.chat-header-info > span');
+    if (status) {
+      status.setAttribute('role', 'status');
+      status.textContent = text;
     }
   }
 
-  // Expose globally so inline onclick fallbacks still work during transition
-  window.toggleChat = function () {
-    chatOpen = !chatOpen;
+  function closeChat(restoreFocus) {
     var win = document.getElementById('chat-window');
     if (!win) return;
-    win.classList.toggle('open', chatOpen);
-    if (chatOpen && !welcomeShown) {
+    chatOpen = false;
+    win.hidden = true;
+    win.classList.remove('open');
+    var bubble = document.getElementById('chat-bubble');
+    if (bubble) {
+      bubble.setAttribute('aria-expanded', 'false');
+      bubble.setAttribute('aria-label', 'Abrir asistente Neftalí');
+      if (restoreFocus) bubble.focus();
+    }
+  }
+
+  function toggleChat() {
+    if (chatOpen) return closeChat(true);
+    var win = document.getElementById('chat-window');
+    if (!win) return;
+    chatOpen = true;
+    win.hidden = false;
+    win.classList.add('open');
+    var bubble = document.getElementById('chat-bubble');
+    if (bubble) {
+      bubble.setAttribute('aria-expanded', 'true');
+      bubble.setAttribute('aria-label', 'Cerrar asistente Neftalí');
+    }
+    if (!welcomeShown) {
       welcomeShown = true;
-      appendMessage('bot', '¡Hola! Soy Neftalí, el asistente virtual de AFNEMO 🌍 ¿En qué te puedo ayudar hoy? Puedo contarte sobre nuestros programas, cómo donar, el directorio de emprendimientos y mucho más.');
+      appendMessage('bot', '¡Hola! Soy Neftalí, el asistente automatizado de AFNEMO. Puedo ofrecer orientación general sobre la asociación y derechos afrocolombianos. Mis respuestas pueden contener errores; confirma los datos y servicios vigentes con la organización. No compartas información personal sensible.');
     }
-    if (chatOpen) {
-      setTimeout(function () {
-        var input = document.getElementById('chat-input');
-        if (input) input.focus();
-      }, 100);
-    }
-  };
+    var input = document.getElementById('chat-input');
+    if (input) input.focus();
+  }
 
   function appendMessage(role, text) {
     var msgs = document.getElementById('chat-messages');
     if (!msgs) return;
     var div = document.createElement('div');
     div.className = 'chat-msg ' + role;
-    div.innerHTML =
-      '<div class="chat-msg-avatar">' + (role === 'bot' ? '🌍' : '👤') + '</div>' +
-      '<div class="chat-msg-bubble">' + text + '</div>';
+    var avatar = document.createElement('div');
+    avatar.className = 'chat-msg-avatar';
+    avatar.setAttribute('aria-hidden', 'true');
+    avatar.textContent = role === 'bot' ? '🌍' : '👤';
+    var message = document.createElement('div');
+    message.className = 'chat-msg-bubble';
+    // Treat both user input and remote replies as untrusted plain text.
+    message.textContent = text;
+    div.append(avatar, message);
     msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
   }
@@ -117,11 +162,10 @@
     var div = document.createElement('div');
     div.className = 'chat-msg bot';
     div.id = 'typing-indicator';
-    div.innerHTML =
-      '<div class="chat-msg-avatar">🌍</div>' +
-      '<div class="chat-msg-bubble">' +
-      '<div class="chat-typing"><span></span><span></span><span></span></div>' +
-      '</div>';
+    var message = document.createElement('div');
+    message.className = 'chat-msg-bubble';
+    message.textContent = 'Consultando al asistente…';
+    div.appendChild(message);
     msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
   }
@@ -131,23 +175,28 @@
     if (t) t.remove();
   }
 
-  window.sendMessage = async function () {
+  async function sendMessage() {
     var input = document.getElementById('chat-input');
     var sendBtn = document.getElementById('chat-send');
-    if (!input) return;
+    if (!input || requestPending) return;
     var text = input.value.trim();
     if (!text) return;
 
+    requestPending = true;
     input.value = '';
     if (sendBtn) sendBtn.disabled = true;
     appendMessage('user', text);
-    chatHistory.push({ role: 'user', content: text });
-
+    var userMessage = { role: 'user', content: text };
+    chatHistory.push(userMessage);
+    setStatus('Consultando…');
     showTyping();
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, REQUEST_TIMEOUT_MS);
 
     try {
       var res = await fetch(WORKER_URL, {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: text,
@@ -156,29 +205,42 @@
         })
       });
 
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
+      if (!data || typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('Invalid reply');
       removeTyping();
-
-      if (data.reply) {
-        appendMessage('bot', data.reply);
-        chatHistory.push({ role: 'assistant', content: data.reply });
-      } else {
-        appendMessage('bot', 'Lo siento, hubo un problema al procesar tu mensaje. Por favor intenta de nuevo.');
-      }
+      appendMessage('bot', data.reply);
+      chatHistory.push({ role: 'assistant', content: data.reply });
+      setStatus('Asistente automatizado');
     } catch (err) {
       removeTyping();
-      appendMessage('bot', 'Lo siento, no pude conectarme en este momento. Por favor intenta más tarde.');
+      chatHistory = chatHistory.filter(function (message) { return message !== userMessage; });
+      appendMessage('bot', controller.signal.aborted
+        ? 'La consulta tardó demasiado y se canceló. Puedes volver a enviar el mensaje.'
+        : 'No fue posible obtener una respuesta del asistente. Puedes volver a intentarlo más tarde.');
+      setStatus('Respuesta no disponible');
+      // Restore the failed message unless the user has already written another.
+      if (!input.value) input.value = text;
+    } finally {
+      clearTimeout(timeout);
+      requestPending = false;
+      if (sendBtn) sendBtn.disabled = false;
     }
+    // A reply never moves focus: the user may have closed the chat or left it.
+  }
 
-    if (sendBtn) sendBtn.disabled = false;
-    if (input) input.focus();
-  };
-
-  window.handleKey = function (e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
-      window.sendMessage();
+      sendMessage();
     }
-  };
+  }
+
+  function init() {
+    initAnimations();
+    initChatbot();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 
 })();

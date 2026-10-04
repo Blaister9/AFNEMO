@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AFNEMO - Asociación AfroCultural Neftalí Mosquera</title>
-<meta name="description" content="AFNEMO - Asociación AfroCultural Neftalí Mosquera. Fundación afrocolombiana comprometida con la preservación cultural, educación y desarrollo comunitario del Pacífico colombiano.">
+<link rel="canonical" href="https://afnemo.co/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="description" content="AFNEMO - Asociación AfroCultural Neftalí Mosquera. Asociación afrocolombiana nacida en Bogotá. Memoria, derechos, saberes ancestrales y experiencias culturales documentadas.">
 <meta property="og:title" content="AFNEMO - Asociación AfroCultural Neftalí Mosquera">
-<meta property="og:description" content="Fundación afrocolombiana comprometida con la preservación cultural, educación y desarrollo comunitario del Pacífico colombiano.">
-<meta property="og:image" content="https://afnemo.co/assets/images/og-image.jpg">
-<meta property="og:url" content="https://afnemo.co">
+<meta property="og:description" content="Asociación afrocolombiana nacida en Bogotá. Memoria, derechos, saberes ancestrales y experiencias culturales documentadas.">
+<meta property="og:image" content="https://afnemo.co/assets/images/hero-image.webp">
+<meta property="og:url" content="https://afnemo.co/">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://js.arcgis.com">
 <link rel="preconnect" href="https://mapas.gobiernobogota.gov.co">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/main.css">
@@ -20,31 +21,33 @@
 <link rel="stylesheet" href="assets/css/hero.css">
 <link rel="stylesheet" href="assets/css/sections.css">
 <link rel="stylesheet" href="assets/css/responsive.css">
-<script type="module" src="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/node_modules/@arcgis/embeddable-components/dist/arcgis-embeddable-components/arcgis-embeddable-components.esm.js"></script>
+<link rel="stylesheet" href="assets/css/content.css">
 </head>
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 <!-- ==========================================
      NAVIGATION
 ========================================== -->
-<nav id="mainNav">
-  <div class="nav-logo">
+<nav id="mainNav" aria-label="Navegación principal">
+  <a class="nav-logo" href="/" aria-label="AFNEMO, inicio">
     <div class="nav-logo-icon">AFNEMO</div>
     <span class="nav-logo-text">Asociación Afrocultural Neftalí Mosquera</span>
-  </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">Nosotros</a></li>
-    <li><a href="#programs">Programas</a></li>
-    <li><a href="#mapa-institucional">Mapa ArcGIS</a></li>
+    <li><a href="#programs">Iniciativas</a></li>
+    <li><a href="#mapa-institucional">Territorios</a></li>
     <li><a href="#news">Noticias</a></li>
-    <li><a href="#team">Equipo</a></li>
+    <li><a href="/asociacion/" data-institutional>Trayectoria</a></li>
     <li><a href="#contact">Contacto</a></li>
-    <li><a href="#donate" class="nav-cta">Donar</a></li>
+    <li><a href="#donate" class="nav-cta">Participa</a></li>
   </ul>
 </nav>
 <!-- ==========================================
      HERO
 ========================================== -->
-<section class="hero">
+<main id="contenido" tabindex="-1">
+<section class="hero" aria-label="Presentación de AFNEMO">
   <div class="hero-bg"></div>
   <!-- Left: texto -->
   <div class="hero-left">
@@ -63,7 +66,7 @@
       </div>
     </div>
     <div class="scroll-indicator">
-      <span>Scroll</span>
+      <span>Explora</span>
       <div class="scroll-line"></div>
     </div>
   </div>
@@ -71,7 +74,7 @@
   <div class="hero-right">
     <div class="hero-img-wrap">
       <div class="hero-img-frame">
-        <img src="assets/images/hero-image.png" alt="Asociación Afrocultural Neftalí Mosquera – AFNEMO" fetchpriority="high">
+        <img src="assets/images/hero-image.webp" alt="Asociación Afrocultural Neftalí Mosquera – AFNEMO" width="1920" height="374" fetchpriority="high">
       </div>
     </div>
     <div class="hero-pattern-strip"></div>
@@ -80,23 +83,11 @@
 <!-- ==========================================
      IMPACT STATS
 ========================================== -->
-<section class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-number">2008</div>
-    <div class="stat-label">Año de fundación en Antonio Nariño</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">17+</div>
-    <div class="stat-label">Años de trayectoria</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">10+</div>
-    <div class="stat-label">Años del Kilombo Yumma</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-number">COP16</div>
-    <div class="stat-label">Representación internacional</div>
-  </div>
+<section class="stats-bar" aria-label="Hitos documentados">
+  <div class="stat-item"><div class="stat-number">2008</div><div class="stat-label">Origen de AFNEMO en Bogotá</div></div>
+  <div class="stat-item"><div class="stat-number">2014</div><div class="stat-label">Creación de Kilombo Yumma</div></div>
+  <div class="stat-item"><div class="stat-number">2023</div><div class="stat-label">Primera Ruta Libertaria en Palenque</div></div>
+  <div class="stat-item"><div class="stat-number">2024</div><div class="stat-label">Crónica de apertura del Museo</div></div>
 </section>
 <!-- ==========================================
      ABOUT / MISSION
@@ -127,18 +118,19 @@
     <div class="about-neftali">
       <div class="about-neftali-tag">¿Quién fue Neftalí Mosquera?</div>
       <blockquote>
-        "Sólido pilar humano, moral e intelectual del Chocó — eminente jurista especializado en derecho laboral y penal, magistrado, fundador de colegios. Indiscutible autor del Bambasú."
+        El archivo institucional recuerda a Neftalí Mosquera como jurista, magistrado, fundador de colegios y autor del Bambasú, a partir de una reseña del Museo IEFEMP.
       </blockquote>
       <p class="neftali-dates">Nació en Istmina el 18 de enero de 1914 · Murió en Quibdó el 13 de abril de 1990</p>
     </div>
   </div>
 
+  <div class="about-full-story"><a href="/asociacion/" data-institutional class="btn-outline">Nuestra historia y los siete objetivos misionales →</a></div>
   <!-- ── Misión y Visión ── -->
   <div class="about-mv">
     <div class="about-mv-inner">
       <div class="mv-card mision">
         <div class="mv-label">⬤ Misión</div>
-        <h3>Lo que hacemos hoy</h3>
+        <h3>Nuestro propósito</h3>
         <p>
           AFNEMO se dedica a empoderar al pueblo afrocolombiano a través de la organización étnica autónoma, la etnoeducación y la participación democrática, promoviendo el ejercicio de sus derechos étnicos y ciudadanos.
         </p>
@@ -176,60 +168,30 @@
 ========================================== -->
 <section class="programs" id="programs">
   <div class="programs-header">
-    <div class="section-tag">Nuestros Programas</div>
-    <h2>Transformando realidades con acciones concretas</h2>
-    <p>Cada programa está diseñado para abordar las necesidades más urgentes de nuestras comunidades y generar un impacto duradero.</p>
+    <div class="section-tag">Nuestras iniciativas</div>
+    <h2>Saberes que guardan memoria y construyen comunidad</h2>
+    <p>Conoce experiencias documentadas de AFNEMO. Sus relatos conservan los hitos históricos; no constituyen una oferta de servicios o una convocatoria vigente.</p>
   </div>
-  <div class="programs-grid">
-    <div class="program-card">
-      <div class="program-icon">🎓</div>
-      <h3>Semillero de Líderes</h3>
-      <p>Formación en liderazgo, derechos humanos e incidencia política para jóvenes afrocolombianos de 14 a 28 años en zonas vulnerables.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-    <div class="program-card">
-      <div class="program-icon">🥁</div>
-      <h3>Cultura Viva</h3>
-      <p>Preservación y difusión de las expresiones artísticas afrocolombianas: música, danza, gastronomía y tradición oral de nuestros pueblos.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-    <div class="program-card">
-      <div class="program-icon">💼</div>
-      <h3>Emprendimiento Afro</h3>
-      <p>Capacitación, acompañamiento y financiamiento para emprendedores afrocolombianos que buscan transformar sus comunidades.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-    <div class="program-card">
-      <div class="program-icon">🏥</div>
-      <h3>Salud y Bienestar</h3>
-      <p>Brigadas de salud, atención psicosocial y programas de medicina tradicional en comunidades con acceso limitado a servicios de salud.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-    <div class="program-card">
-      <div class="program-icon">👩🏿‍💻</div>
-      <h3>Mujeres Afro Digital</h3>
-      <p>Formación en habilidades digitales y tecnológicas para mujeres afrocolombianas, cerrando la brecha digital y de género.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-    <div class="program-card">
-      <div class="program-icon">🌱</div>
-      <h3>Territorio y Ambiente</h3>
-      <p>Defensa del territorio ancestral y proyectos de sostenibilidad ambiental en las regiones del Pacífico y Caribe colombiano.</p>
-      <a href="#" class="program-link">Conoce más →</a>
-    </div>
-  </div>
+  <div class="programs-grid"><article class="program-card"><div class="program-icon" aria-hidden="true">🌿</div><h3>Kilombo Yumma</h3><p>Memoria de un espacio creado en 2014 para preservar y transmitir saberes de medicina ancestral y tradicional.</p><a href="/experiencias/kilombo-yumma/" class="program-link">Leer sobre Kilombo Yumma →</a></article>
+<article class="program-card"><div class="program-icon" aria-hidden="true">▤</div><h3>KilomboApp</h3><p>Documentación y transmisión digital de saberes vinculadas a la experiencia de Kilombo Yumma.</p><a href="/experiencias/kilomboapp/" class="program-link">Leer sobre KilomboApp →</a></article>
+<article class="program-card"><div class="program-icon" aria-hidden="true">◈</div><h3>Museo del Viernes Negro</h3><p>Un espacio de memoria y reconocimiento de las expresiones culturales afro, documentado en Antonio Nariño.</p><a href="/experiencias/museo-viernes-negro/" class="program-link">Leer sobre Museo del Viernes Negro →</a></article>
+<article class="program-card"><div class="program-icon" aria-hidden="true">✦</div><h3>Cátedra Benkos Biohó</h3><p>Una propuesta formativa sobre historia, arte, cultura, participación y paz frente a la discriminación.</p><a href="/experiencias/catedra-benkos-bioho/" class="program-link">Leer sobre Cátedra Benkos Biohó →</a></article>
+<article class="program-card"><div class="program-icon" aria-hidden="true">↗</div><h3>Ruta Libertaria</h3><p>Memoria, oralidad e identidad: su primera versión se documentó en San Basilio de Palenque en 2023.</p><a href="/experiencias/ruta-libertaria/" class="program-link">Leer sobre Ruta Libertaria →</a></article></div>
+  <div class="programs-more"><a class="btn-outline" href="/experiencias/">Explorar todas las experiencias →</a>
+  <details class="legacy-programs"><summary>Otras líneas presentadas por AFNEMO</summary>
+    <p>Semillero de Líderes, Cultura Viva, Emprendimiento Afro, Salud y Bienestar, Mujeres Afro Digital y Territorio y Ambiente forman parte de las líneas presentadas en este sitio. Su alcance, servicios y convocatorias están pendientes de actualización institucional.</p>
+    <a href="#contact">Información de contacto</a>
+  </details></div>
 </section>
 <!-- ==========================================
      CTA / DONATE BANNER
 ========================================== -->
 <section class="cta-banner" id="donate">
   <div class="cta-content">
-    <h2>Tu aporte transforma vidas</h2>
-    <p>Cada donación nos permite llegar a más comunidades, formar más líderes y preservar nuestra herencia cultural. Juntos construimos un Colombia más justa y diversa.</p>
-    <div class="cta-actions">
-      <a href="#" class="btn-white">Donar Ahora ❤️</a>
-      <a href="#" class="btn-outline">Ser Voluntario</a>
-    </div>
+    <h2>Participa en nuestra comunidad</h2>
+    <p>La memoria se comparte. Conoce nuestras experiencias y consulta los canales de contacto para conversar sobre colaboración y voluntariado.</p>
+    <div class="cta-actions"><a href="#contact" class="btn-white">Contacto y colaboración →</a><a href="/experiencias/" class="btn-outline">Conocer experiencias</a></div>
+    <p class="service-note">No hay un medio de donación ni un formulario de inscripción habilitados en esta página.</p>
   </div>
 </section>
 <!-- ==========================================
@@ -239,172 +201,112 @@
   <div class="news-header">
     <div>
       <div class="section-tag">Noticias y Eventos</div>
-      <h2>Lo último de nuestra fundación</h2>
+      <h2>Noticias y memoria de AFNEMO</h2>
     </div>
-    <a href="#news">Ver todas las noticias →</a>
+    <a href="/noticias/">Ver todas las noticias →</a>
   </div>
   <!-- Tarjetas renderizadas dinámicamente por assets/js/news.js -->
-  <div id="noticias-container" class="news-grid" aria-live="polite" aria-label="Últimas noticias de AFNEMO"></div>
+  <div id="noticias-container" class="news-grid" aria-live="polite" aria-label="Últimas noticias de AFNEMO"><p>Cargando noticias…</p></div>
+  <noscript><p><a href="/noticias/">Leer el listado completo de noticias</a>.</p></noscript>
 </section>
 <!-- ==========================================
      TEAM
 ========================================== -->
 <section class="team" id="team">
-  <div class="team-inner">
-    <div class="team-header">
-      <div class="section-tag">Nuestro Equipo</div>
-      <h2>Las personas detrás del cambio</h2>
-      <p>Un equipo diverso y comprometido con la transformación social de las comunidades afrocolombianas.</p>
-    </div>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-card-img"></div>
-        <h4>María del Carmen Palacios</h4>
-        <p>Directora Ejecutiva</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-img"></div>
-        <h4>Jorge Luis Mosquera</h4>
-        <p>Director de Programas</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-img"></div>
-        <h4>Luz Dary Hinestroza</h4>
-        <p>Coordinadora Cultura Viva</p>
-      </div>
-      <div class="team-card">
-        <div class="team-card-img"></div>
-        <h4>Carlos Andrés Caicedo</h4>
-        <p>Coordinador de Educación</p>
-      </div>
-    </div>
-  </div>
+  <div class="team-inner"><div class="team-header">
+    <div class="section-tag">Organización y comunidad</div>
+    <h2>Una memoria construida colectivamente</h2>
+    <p>AFNEMO reúne experiencias de organización, transmisión de saberes y defensa de derechos del pueblo negro afrocolombiano.</p>
+    <p>El archivo recoge proyectos de formación, cultura, saberes ancestrales y fortalecimiento comunitario. Conoce esa trayectoria con sus fechas y fuentes.</p>
+    <a href="/asociacion/" data-institutional class="history-link">Leer nuestra trayectoria y colaboraciones históricas →</a>
+    <p>El directorio del equipo y las alianzas vigentes están en revisión institucional.</p>
+  </div></div>
 </section>
 <!-- ==========================================
-     PARTNERS
-========================================== -->
-<section class="partners">
-  <div class="partners-label">Organizaciones aliadas</div>
-  <div class="partners-logos">
-    <div class="partner-logo">ONU</div>
-    <div class="partner-logo">USAID</div>
-    <div class="partner-logo">MinInterior</div>
-    <div class="partner-logo">SENA</div>
-    <div class="partner-logo">Univ. del Valle</div>
-    <div class="partner-logo">PNUD</div>
-  </div>
-</section>
-<!-- ==========================================
-     MAPA INSTITUCIONAL ARCGIS
+     TERRITORIOS Y EXPERIENCIAS
 ========================================== -->
 <section class="arcgis-section" id="mapa-institucional">
   <div class="arcgis-section-header">
-    <div class="section-tag">Mapa Institucional</div>
-    <h2>Mapa Georreferenciado AFNEMO</h2>
-    <p>Explora nuestro mapa institucional con la información georreferenciada de las iniciativas y presencia territorial de la asociación.</p>
+    <div class="section-tag">Memoria y territorio</div>
+    <h2>Territorios y experiencias</h2>
+    <p>Dos formas de acercarse al territorio: consultar los emprendimientos de Bogotá y conocer las historias documentadas por AFNEMO.</p>
+    <nav class="territory-paths" aria-label="Explorar territorios y experiencias">
+      <a href="#territory-map"><span>01 · Mapa</span>Emprendimientos en Bogotá <span aria-hidden="true">↓</span></a>
+      <a href="#experiencias-relacionadas"><span>02 · Experiencias AFNEMO</span>Historias y procesos documentados <span aria-hidden="true">↓</span></a>
+    </nav>
   </div>
-  <div class="arcgis-map-wrapper">
-    <iframe
-      src="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338"
-      style="width:100%; height:600px; border:none;"
-      loading="lazy"
-      allowfullscreen
-      title="Mapa Georreferenciado AFNEMO">
-    </iframe>
+  <div id="territory-map" data-state="idle" class="territory-map" tabindex="-1">
+    <div class="territory-section-heading"><p class="territory-eyebrow">01 · Cartografía de consulta</p>
+      <h3>Emprendimientos Afrocolombianos en Bogotá</h3>
+      <p>Este mapa reúne emprendimientos afrocolombianos por categorías y localidades. Sus puntos no representan sedes, proyectos ni experiencias de AFNEMO.</p>
+      <p class="map-source">Fuente: <a href="https://mapas.gobiernobogota.gov.co/waportal/home/item.html?id=a9e507d5218647efb0d83119272b7338" target="_blank" rel="noopener noreferrer">Portal de mapas de la Secretaría Distrital de Gobierno (otra pestaña)</a>.</p>
+    </div>
+    <div class="arcgis-map-wrapper">
+      <div id="map-intro" class="map-intro"><p>Una mirada a los emprendimientos de la ciudad</p><p>Explora el recurso territorial del portal de Bogotá.</p><button id="map-load" type="button" class="territory-button" hidden>Abrir mapa aquí</button><noscript><p>Consulta el mapa en el enlace al portal de Gobierno que aparece a continuación.</p></noscript></div>
+      <iframe id="map-frame" data-src="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" hidden allowfullscreen title="Visor externo: emprendimientos afrocolombianos en Bogotá" aria-describedby="map-help"></iframe>
+    </div>
+    <div class="map-controls-public"><p id="map-status" role="status">Las experiencias de AFNEMO están disponibles debajo del mapa.</p><div><button id="map-retry" class="territory-button secondary" type="button" hidden>Reintentar mapa</button><button id="map-close" class="territory-button secondary" type="button" hidden>Cerrar mapa</button></div></div>
+    <p class="map-help" id="map-help">Si el visor no aparece, puedes <a href="https://mapas.gobiernobogota.gov.co/waportal/apps/mapviewer/index.html?webmap=a9e507d5218647efb0d83119272b7338" target="_blank" rel="noopener noreferrer">abrir el mapa en el portal de Gobierno (otra pestaña)</a> o <a href="#experiencias-relacionadas">seguir con las experiencias de AFNEMO ↓</a>.</p>
+  </div>
+  <div id="experiencias-relacionadas" class="territory-stories" tabindex="-1">
+    <p class="territory-eyebrow">02 · Archivo de la organización</p>
+    <h3>Experiencias AFNEMO</h3>
+    <p>Historias, iniciativas y procesos con sus fuentes y territorios documentados. Este archivo es independiente de los emprendimientos del mapa.</p>
+    <div id="territory-explorer"><!-- EXPERIENCE_EXPLORER --></div>
+    <a class="territory-all" href="/experiencias/">Abrir el archivo de experiencias →</a>
   </div>
 </section>
 <!-- ==========================================
      NEWSLETTER
 ========================================== -->
 <section class="newsletter" id="contact">
-  <h3>Mantente informado</h3>
-  <p>Suscríbete a nuestro boletín para recibir noticias, eventos y oportunidades directamente en tu correo.</p>
-  <div class="newsletter-form">
-    <input type="email" placeholder="tu@correo.com">
-    <button>Suscribirse</button>
-  </div>
+  <div class="section-tag">Contacto y colaboración</div>
+  <h2>Sigamos en conversación</h2>
+  <p>Estos son los perfiles sociales enlazados por AFNEMO en su sitio. Puedes consultarlos para conocer publicaciones y opciones de contacto.</p>
+  <div class="contact-links"><a href="https://www.facebook.com/p/Asociaci%C3%B3n-Afrocultural-Neftal%C3%AD-Mosquera-Afnemo-61561154941588/" target="_blank" rel="noopener noreferrer">Facebook de AFNEMO ↗</a><a href="https://www.instagram.com/afnemo_/" target="_blank" rel="noopener noreferrer">Instagram de AFNEMO ↗</a></div>
+  <p><a href="/asociacion/" data-institutional>Conoce los valores del voluntariado y los servicios descritos en el archivo</a>.</p>
+  <p class="service-note">La disponibilidad de colaboración y voluntariado debe confirmarse con la asociación. El boletín por correo todavía no está habilitado.</p>
 </section>
+</main>
 <!-- ==========================================
      FOOTER
 ========================================== -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-brand-logo">
-          <div class="nav-logo-icon">AFNEMO</div>
-          <span class="nav-logo-text">Asociación Afrocultural Neftalí Mosquera</span>
-        </div>
-        <p>Fundación sin ánimo de lucro dedicada al empoderamiento y desarrollo de las comunidades afrocolombianas, raizales y palenqueras.</p>
-        <div class="footer-social">
-          <a href="https://www.facebook.com/p/Asociaci%C3%B3n-Afrocultural-Neftal%C3%AD-Mosquera-Afnemo-61561154941588/" rel="noopener noreferrer" target="_blank">Fb</a>
-          <a href="https://www.instagram.com/afnemo_/" rel="noopener noreferrer" target="_blank">Ig</a>
-          <a href="#">Tw</a>
-          <a href="#">Yt</a>
-          <a href="#">Tk</a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Fundación</h4>
-        <a href="#">Quiénes somos</a>
-        <a href="#">Misión y Visión</a>
-        <a href="#">Equipo</a>
-        <a href="#">Transparencia</a>
-        <a href="#">Informes anuales</a>
-      </div>
-      <div class="footer-col">
-        <h4>Programas</h4>
-        <a href="#">Semillero de Líderes</a>
-        <a href="#">Cultura Viva</a>
-        <a href="#">Emprendimiento Afro</a>
-        <a href="#">Mujeres Afro Digital</a>
-        <a href="#">Territorio y Ambiente</a>
-      </div>
-      <div class="footer-col">
-        <h4>Participa</h4>
-        <a href="#">Donar</a>
-        <a href="#">Voluntariado</a>
-        <a href="#">Alianzas</a>
-        <a href="#">Eventos</a>
-        <a href="#">Contacto</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Fundación Raíces Afro. Todos los derechos reservados. NIT: 000.000.000-0</span>
-      <div>
-        <a href="#">Política de Privacidad</a> · <a href="#">Términos de Uso</a>
-      </div>
-    </div>
-  </div>
+  <div class="footer-inner"><div class="footer-top">
+    <div class="footer-brand"><div class="footer-brand-logo"><span class="nav-logo-icon">AFNEMO</span></div><p>Asociación Afrocultural Neftalí Mosquera. Organización, memoria y derechos del pueblo negro afrocolombiano.</p></div>
+    <div class="footer-col"><h2>Asociación</h2><a href="#about">Quiénes somos</a><a href="/asociacion/" data-institutional>Historia y trayectoria</a><a href="#contact">Contacto</a></div>
+    <div class="footer-col"><h2>Experiencias</h2><a href="/experiencias/">Explorar relatos</a><a href="#programs">Nuestras iniciativas</a><a href="#mapa-institucional">Visor de emprendimientos</a></div>
+    <div class="footer-col"><h2>Participa</h2><a href="/noticias/">Noticias y memoria</a><a href="#donate">Colaboración y voluntariado</a><a href="https://www.instagram.com/afnemo_/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div>
+  </div><div class="footer-bottom"><span>© 2026 Asociación Afrocultural Neftalí Mosquera — AFNEMO</span><a href="/admin/guia.html">Guía para subir contenido</a><a href="#contenido">Volver al inicio ↑</a></div></div>
 </footer>
 
 <!-- ==========================================
-     CHATBOT WIDGET — Burbuja flotante con Claude
-     ⚠️ REEMPLAZA LA URL DEL WORKER con la tuya (en assets/js/animations.js)
+     ASISTENTE AFNEMO
 ========================================== -->
-<button id="chat-bubble" title="¿En qué te ayudamos?">🌍</button>
+<button id="chat-bubble" type="button" hidden aria-label="Abrir asistente AFNEMO" title="¿En qué te ayudamos?">🌍</button>
 
-<div id="chat-window">
+<div id="chat-window" hidden role="dialog" aria-labelledby="chat-title">
   <div id="chat-header">
     <div class="chat-avatar">🌍</div>
     <div class="chat-header-info">
-      <h4>Asistente AFNEMO</h4>
-      <span><span class="chat-online-dot"></span> En línea</span>
+      <h2 id="chat-title">Asistente AFNEMO</h2>
+      <span>Asistente automatizado</span>
     </div>
-    <button id="chat-close">✕</button>
+    <button id="chat-close" type="button" aria-label="Cerrar asistente">✕</button>
   </div>
-  <div id="chat-messages"></div>
+  <div id="chat-messages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Conversación con Neftalí"></div>
   <div id="chat-input-area">
-    <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." />
-    <button id="chat-send">➤</button>
+    <input type="text" id="chat-input" aria-label="Tu mensaje" maxlength="2000" placeholder="Escribe tu mensaje..." />
+    <button id="chat-send" type="button" aria-label="Enviar mensaje">➤</button>
   </div>
 </div>
 
 <!-- External scripts -->
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/animations.js"></script>
-<script src="assets/js/arcgis.js"></script>
 <script src="assets/js/news.js" defer></script>
+<script src="assets/js/experiences.js" defer></script>
+<script src="assets/js/territory-map.js" defer></script>
 
 <!-- Netlify Identity -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
