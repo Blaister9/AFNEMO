@@ -126,7 +126,7 @@ async function contextWithFixtures(browser, options = {}, handler) {
     page.on('pageerror', error => errors.push(error.message));
     const experiences = await (await context.request.get(base + '/data/experiencias.json')).json();
     const documentedTerritories = {
-      'kilombo-yumma': 'Bogotá',
+      'kilombo-yumma': 'Antonio Nariño y San Cristóbal, Bogotá',
       'kilomboapp': 'Bogotá',
       'museo-viernes-negro': 'Antonio Nariño, Bogotá',
       'catedra-benkos-bioho': 'Antonio Nariño, Bogotá',
@@ -141,7 +141,8 @@ async function contextWithFixtures(browser, options = {}, handler) {
     const ruta = experiences.find(record => record.slug === 'ruta-libertaria');
     assert.equal(ruta.event_date, '2023');
     for (const field of ['municipality', 'department', 'country']) assert.equal(ruta[field], '', `Ruta: no inferred ${field}`);
-    assert.deepEqual(ruta.milestones, [], 'one documented year does not become a fabricated timeline');
+    assert.deepEqual(ruta.milestones.map(item => item.date), ['2023', '2025-11-28', '2026-09-25'], 'original year and later contract dates retain their documented precision');
+    assert.ok(ruta.milestones.slice(1).every(item => item.label.startsWith('Firma del contrato')), 'contract dates are not presented as travel dates');
 
     await page.goto(base + '/', { waitUntil: 'domcontentloaded' });
     const section = page.locator('#mapa-institucional');
@@ -178,7 +179,8 @@ async function contextWithFixtures(browser, options = {}, handler) {
       assert.match(await page.locator('main').innerText(), /[Ff]uente|[Rr]evisión/);
       if (record.slug === 'ruta-libertaria') {
         assert.match(await page.locator('main').innerText(), /2023/);
-        assert.equal(await page.getByRole('heading', { name: /Hitos documentados/ }).count(), 0);
+        assert.equal(await page.getByRole('heading', { name: /Hitos documentados/ }).count(), 1);
+        assert.equal(await page.locator('.experience-milestones li').count(), 3);
       }
       await page.locator('.content-back').first().click();
       assert.equal(new URL(page.url()).pathname, '/experiencias/');

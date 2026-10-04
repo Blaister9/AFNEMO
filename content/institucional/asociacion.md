@@ -1,8 +1,8 @@
 ---
 title: "AFNEMO: origen, misión y trayectoria"
-excerpt: "Nuestra historia, los siete objetivos misionales y las experiencias de colaboración recogidas en el archivo institucional."
-source: "Documento institucional pagina a 19 de febrero.docx, compilado el 19 de febrero de 2025: origen (párrafos 2–6), Neftalí Mosquera (7–10), visión (11–13), voluntariado (19–38), misión y objetivos (39–49), servicios (112–126) y colaboraciones (154–184). Se conserva una sola versión de la sección repetida en 185–215."
-reviewed_at: "2026-10-02"
+excerpt: "Nuestra historia, los siete objetivos misionales y las colaboraciones documentadas en el archivo institucional y en fuentes públicas."
+source: "Documento institucional pagina a 19 de febrero.docx, compilado el 19 de febrero de 2025: origen (párrafos 2–6), Neftalí Mosquera (7–10), visión (11–13), voluntariado (19–38), misión y objetivos (39–49), servicios (112–126) y colaboraciones (154–184), sin duplicar 185–215. Actualización documental: CENPAZ, 19 de febrero de 2025; SCRD, Resolución 258 del 2 de mayo de 2025; Colombia Compra Eficiente, contratos de 2025 y 2026 citados en el relato."
+reviewed_at: "2026-10-04"
 published: true
 ---
 
@@ -85,6 +85,17 @@ La sección institucional publicada el **21 de agosto de 2024** recoge los sigui
 | Universidad de La Salle | Jornadas de sanación espiritual y chirimioterapia para estudiantes y docentes, descritas desde una perspectiva psicoancestral. |
 | Secretaría de Salud de Bogotá | Estrategia de Kilombo Yumma. El archivo no establece un período contractual ni acredita continuidad actual. |
 | Eindhoven University of Technology | Creación de KilomboApp como propuesta de documentación y transmisión digital de saberes ancestrales. |
+
+## Colaboraciones recientes documentadas
+
+Las siguientes fuentes identifican acciones y vínculos concretos de AFNEMO en **2025–2026**. Sus fechas y alcances permiten reconocer trabajo reciente, sin convertir las trece colaboraciones históricas en una lista de aliados permanentes ni toda la oferta de 2024 en servicios disponibles hoy.
+
+- **Febrero de 2025 — CENPAZ y organizaciones convocantes.** AFNEMO figura entre las organizaciones firmantes de un pronunciamiento conjunto y de la convocatoria a una velatón por la paz. [Comunicado de CENPAZ del 19 de febrero de 2025](https://www.cenpaz.com/2025/02/comunicado-y-velatonnacionalporlapaz-y.html).
+- **Mayo de 2025 — Secretaría Distrital de Cultura, Recreación y Deporte.** La Resolución 258 selecciona a AFNEMO para el incentivo de los laboratorios étnicos, asociado a la categoría del Museo del Viernes Negro. [Invitación y resolución de selección del 2 de mayo de 2025](https://invitaciones.scrd.gov.co/verInvitacion/843). La selección documenta el apoyo institucional; no equivale a un balance de ejecución.
+- **Noviembre de 2025 y septiembre de 2026 — Alcaldía Local de Antonio Nariño.** SECOP II registra a AFNEMO como contratista para apoyo logístico, técnico y operativo a la conmemoración de la afrocolombianidad, con la segunda fase de Ruta Libertaria, y para su fase III. Las [fechas y alcances de estos contratos](/experiencias/ruta-libertaria/) están diferenciados de las fechas de los recorridos.
+- **Diciembre de 2025 — Secretaría Distrital de Gobierno.** El contrato 1517-2025, firmado el 24 de diciembre, identifica a AFNEMO como prestadora contratada para procesos de memoria, identidad y transmisión de saberes de comunidades afrocolombianas, raizales y palenqueras. El registro consigna un período del 26 de diciembre de 2025 al 9 de abril de 2026. [Registro oficial de Colombia Compra Eficiente](https://www.datos.gov.co/resource/jbjy-vk9h.json?id_contrato=CO1.PCCNTR.8730533&$select=nombre_entidad,referencia_del_contrato,proveedor_adjudicado,descripcion_del_proceso,estado_contrato,fecha_de_firma,fecha_de_inicio_del_contrato,fecha_de_fin_del_contrato). Esto acredita contratación reciente, no una convocatoria comercial abierta ni la certificación de todos sus resultados.
+
+La colaboración académica entre Kilombo Yumma y la Universidad de los Andes se documenta con su alcance propio en la [ficha de Yumma](/experiencias/kilombo-yumma/).
 
 ## Iniciativas y memorias para seguir leyendo
 

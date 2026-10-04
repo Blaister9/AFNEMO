@@ -105,7 +105,7 @@ test('Videos y enlaces editoriales rechazan URLs inseguras y estructuras inváli
   assert.throws(() => normalize({ milestones: [{ label: 'Fecha inválida', date: '2023-13' }] }), /fecha/);
 });
 
-test('Las cinco fichas usan únicamente territorios y fechas respaldados por el archivo', async () => {
+test('Las cinco fichas distinguen archivo histórico y fuentes públicas fechadas', async () => {
   const records = await loadCollection(project, 'experiencias');
   assert.equal(records.length, 5);
   const get = slug => records.find(record => record.slug === slug);
@@ -115,9 +115,11 @@ test('Las cinco fichas usan únicamente territorios y fechas respaldados por el 
   assert.equal(route.event_date, '2023');
   assert.equal(route.event_label, 'Primera versión documentada');
   assert.equal(get('kilombo-yumma').event_date, '2014');
-  for (const slug of ['kilombo-yumma', 'kilomboapp']) assert.equal(get(slug).territory, 'Bogotá');
+  assert.equal(get('kilombo-yumma').territory, 'Antonio Nariño y San Cristóbal, Bogotá');
+  assert.equal(get('kilomboapp').territory, 'Bogotá');
   assert.equal(get('kilomboapp').location_type, 'territorial');
-  assert.equal(get('kilomboapp').event_date, '');
+  assert.equal(get('kilomboapp').event_date, '2023');
+  assert.match(get('kilomboapp').event_label, /no es la fecha exacta de lanzamiento/);
   assert.match(get('kilomboapp').context, /herramienta digital/);
   assert.equal(get('kilombo-yumma').related_initiative.url, get('kilomboapp').url);
   assert.equal(get('kilomboapp').related_initiative.url, get('kilombo-yumma').url);
@@ -128,8 +130,12 @@ test('Las cinco fichas usan únicamente territorios y fechas respaldados por el 
   }
   assert.equal(get('museo-viernes-negro').videos.length, 2);
   assert.match(get('museo-viernes-negro').image_credit, /Imagen suministrada por AFNEMO/);
+  assert.deepEqual(route.milestones.map(item => item.date), ['2023', '2025-11-28', '2026-09-25']);
+  assert.ok(route.milestones.slice(1).every(item => item.label.startsWith('Firma del contrato')));
+  assert.match(get('museo-viernes-negro').html, /Ubicación pública actual/);
+  assert.match(get('museo-viernes-negro').html, /25 de abril de 2025/);
   for (const record of records) {
-    assert.deepEqual(record.milestones, [], `${record.slug}: un único año o fecha no crea una cronología`);
+    if (record.slug !== 'ruta-libertaria') assert.deepEqual(record.milestones, [], `${record.slug}: un único año o fecha no crea una cronología`);
     assert.deepEqual(record.gallery, []);
     assert.doesNotMatch(record.html, /<h2>Fuente y materiales<\/h2>|Revisión editorial:/);
     assert.doesNotMatch(JSON.stringify(record), /"(?:coordinates|latitude|longitude|address)":/);
