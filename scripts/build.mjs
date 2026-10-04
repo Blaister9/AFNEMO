@@ -12,7 +12,7 @@ const codeAssets = [
   'assets/css/main.css', 'assets/css/nav.css', 'assets/css/hero.css', 'assets/css/sections.css', 'assets/css/responsive.css', 'assets/css/content.css',
   'assets/js/nav.js', 'assets/js/animations.js', 'assets/js/news.js', 'assets/js/experiences.js', 'assets/js/territory-map.js'
 ];
-const staticFiles = ['admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/validation.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
+const staticFiles = ['assets/favicon.svg', 'admin/index.html', 'admin/config.yml', 'admin/preview.js', 'admin/validation.js', 'admin/guia.html', 'admin/guia.css', '_redirects', 'CNAME'];
 const existingPublicImages = new Set(['/assets/images/hero-image.webp']);
 
 function validateEditorialLinks(records, pages) {

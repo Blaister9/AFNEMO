@@ -95,6 +95,12 @@ test('El repositorio genera todas las rutas y enlaces internos con recursos serv
   for (const file of Object.keys(snapshot).filter(file => file.endsWith('.html') && !file.startsWith('admin/'))) {
     const html = await read(root, `dist/${file}`);
     const origin = new URL(file, 'https://afnemo.co/');
+    const canonical = origin.href.replace(/index\.html$/, '');
+    assert.match(html, /<html lang="es">/);
+    assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`), `${file}: canonical`);
+    assert.ok(html.includes(`<meta property="og:url" content="${canonical}">`), `${file}: Open Graph URL`);
+    assert.match(html, /<link rel="icon" href="\/assets\/favicon\.svg" type="image\/svg\+xml">/);
+    assert.match(html, /<meta name="description" content="[^"]+">/);
     for (const match of html.matchAll(/\b(href|src)="([^"]+)"/g)) {
       const url = new URL(match[2].replaceAll('&amp;', '&'), origin);
       if (url.origin !== origin.origin) continue;

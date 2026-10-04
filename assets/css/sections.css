@@ -423,7 +423,7 @@
   line-height: 1.15;
 }
 .news-header a {
-  color: var(--earth-red);
+  color: #973813;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
@@ -738,7 +738,7 @@ footer {
   border-color: var(--gold);
   color: var(--warm-black);
 }
-.footer-col h4 {
+.footer-col h2 {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -877,7 +877,7 @@ footer {
   font-size: 1.1rem;
   flex-shrink: 0;
 }
-.chat-header-info h4 {
+.chat-header-info h2 {
   font-family: 'DM Serif Display', serif;
   font-size: 1rem;
   color: var(--cream);

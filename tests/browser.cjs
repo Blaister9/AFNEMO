@@ -101,7 +101,8 @@ async function verifyImages(page, route) {
  const recordsByUrl = new Map([...news, ...experiences].map(record => [record.url, record]));
  const captureRoutes = new Set(['/', '/noticias/', '/experiencias/', '/asociacion/', '/admin/guia.html', ...experiences.map(record => record.url), ...news.map(record => record.url)]);
  const links = new Set(), captures = [];
- for (const [screen, width, height] of [['desktop',1440,1000], ['mobile',390,844], ['small',320,568]]) {
+ const viewports = [['desktop',1440,900], ['tablet',768,1024], ['mobile',390,844], ['small',320,568]];
+ for (const [screen, width, height] of viewports) {
   await page.setViewportSize({width,height});
   for (const route of routes) {
    assert.equal((await page.goto(base + route, { waitUntil: 'domcontentloaded' })).status(), 200);
@@ -207,7 +208,7 @@ async function verifyImages(page, route) {
  assert.equal(await staticPage.locator('.nav-links').isVisible(),true);
  await noJS.close();
  const admin = await verifyAdmin(browser, captures);
- fs.writeFileSync(path.join(evidence,'browser-results.json'),JSON.stringify({routes:routes.length,viewports:3,news:news.length,experiences:experiences.length,localLinks:links.size,pageErrors:errors,githubRequests:0,captures,externalConsoleErrors,admin,externalServices:'Map failure simulated; real Decap login screen checked on desktop/mobile. Remote CMS authentication and Worker backend were not exercised.'},null,2));
- console.log(`PASS browser: ${routes.length} public/guide routes × 3 viewports; /admin/ × desktop/mobile (authentication not validated); ${news.length} news, ${experiences.length} experiences, ${links.size} internal links, institution, editorial guide, decoded images, filters, reload, drafts, CSP, news retry, no-JS, keyboard; 0 page errors.`);
+ fs.writeFileSync(path.join(evidence,'browser-results.json'),JSON.stringify({routes:routes.length,viewports:viewports.length,news:news.length,experiences:experiences.length,localLinks:links.size,pageErrors:errors,githubRequests:0,captures,externalConsoleErrors,admin,externalServices:'Map failure simulated; real Decap login screen checked on desktop/mobile. Remote CMS authentication and Worker backend were not exercised.'},null,2));
+ console.log(`PASS browser: ${routes.length} public/guide routes × ${viewports.length} viewports; /admin/ × desktop/mobile (authentication not validated); ${news.length} news, ${experiences.length} experiences, ${links.size} internal links, institution, editorial guide, decoded images, filters, reload, drafts, CSP, news retry, no-JS, keyboard; 0 page errors.`);
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

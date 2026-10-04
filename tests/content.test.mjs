@@ -74,6 +74,7 @@ test('Build genera rutas directas, feed propio, hashes y excluye originales, bor
     await fs.rm(root, { recursive: true, force: true });
   });
   for (const directory of ['assets/css', 'assets/js', 'admin']) await fs.cp(path.join(project, directory), path.join(root, directory), { recursive: true });
+  await fs.copyFile(path.join(project, 'assets/favicon.svg'), path.join(root, 'assets/favicon.svg'));
   for (const directory of ['content/noticias', 'content/experiencias', 'content/institucional', 'assets/images/noticias', '.claude', 'docs']) await fs.mkdir(path.join(root, directory), { recursive: true });
   await fs.writeFile(path.join(root, 'index.html'), '<html><head><link rel="stylesheet" href="assets/css/main.css"></head><body><nav id="mainNav"><a href="#about">Inicio</a></nav><main id="about">AFNEMO</main><footer><a href="#about">Inicio</a></footer><script src="assets/js/news.js"></script></body></html>');
   await fs.writeFile(path.join(root, '_redirects'), '/admin /admin/index.html 200');

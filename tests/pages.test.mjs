@@ -56,6 +56,7 @@ test('Build publica imágenes de galería con dimensiones reales y excluye las n
     await fs.rm(root, { recursive: true, force: true });
   });
   for (const directory of ['assets/css', 'assets/js', 'admin']) await fs.cp(path.join(project, directory), path.join(root, directory), { recursive: true });
+  await fs.copyFile(path.join(project, 'assets/favicon.svg'), path.join(root, 'assets/favicon.svg'));
   await fs.mkdir(path.join(root, 'content/experiencias'), { recursive: true });
   await fs.mkdir(path.join(root, 'assets/images/experiencias'), { recursive: true });
   await fs.copyFile(path.join(project, 'assets/images/experiencias/museo-viernes-negro.webp'), path.join(root, 'assets/images/experiencias/galeria.webp'));
