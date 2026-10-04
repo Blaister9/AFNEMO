@@ -86,6 +86,9 @@ test('El repositorio genera todas las rutas y enlaces internos con recursos serv
   const snapshot = await publicSnapshot(root);
   assert.equal(result.experiences, 5);
   assert.ok('admin/validation.js' in snapshot);
+  assert.match(await read(root, 'dist/_redirects'), /^\/noticias\/2026-10-02-memoria-museo\/\s+\/noticias\/2024-06-18-memoria-museo\/\s+301$/m);
+  assert.ok('noticias/2024-06-18-memoria-museo/index.html' in snapshot);
+  assert.equal('noticias/2026-10-02-memoria-museo/index.html' in snapshot, false);
   for (const collection of ['noticias', 'experiencias']) {
     for (const record of await feed(root, collection)) {
       assert.ok(`${record.url.slice(1)}index.html` in snapshot, record.url);

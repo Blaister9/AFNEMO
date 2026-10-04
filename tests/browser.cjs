@@ -86,7 +86,7 @@ async function verifyImages(page, route) {
  const expectedNewsDates = {
   '2024-07-25-afnemo-cop16': '2024-07-25',
   '2024-11-26-saberes-ancestrales-biodiversidad': '2024-11-26',
-  '2026-10-02-memoria-museo': '2024-06-18'
+  '2024-06-18-memoria-museo': '2024-06-18'
  };
  assert.deepEqual(news.map(record => record.slug).sort(), Object.keys(expectedNewsDates).sort(), 'exactly the three reviewed historical news entries');
  assert.deepEqual(experiences.map(record => record.slug).sort(), ['catedra-benkos-bioho', 'kilombo-yumma', 'kilomboapp', 'museo-viernes-negro', 'ruta-libertaria'].sort(), 'exactly the five reviewed initiatives');
@@ -94,6 +94,10 @@ async function verifyImages(page, route) {
   assert.equal(record.date.slice(0, 10), expectedNewsDates[record.slug], `${record.slug}: preserve original publication date`);
   assert.equal(record.historical, true, `${record.slug}: historical label`);
  }
+ const museumNews = news.find(record => record.slug === '2024-06-18-memoria-museo');
+ assert.equal(museumNews.event_date, '', 'the source does not establish an exact opening date');
+ assert.equal(museumNews.source_date, '2024-06-18', 'original publication date documented in paragraphs 51–52');
+ assert.equal(museumNews.updated_at, '2026-10-02', 'site synthesis review remains separate from the original publication');
  const museum = experiences.find(record => record.slug === 'museo-viernes-negro');
  assert.equal(museum.image, '/assets/images/experiencias/museo-viernes-negro.webp', 'the approved original museum photograph is integrated');
  assert.ok(museum.image_width > 0 && museum.image_height > 0 && museum.image_alt && museum.image_credit, 'museum image has dimensions, description and credit');

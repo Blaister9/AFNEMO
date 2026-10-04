@@ -27,7 +27,7 @@ videos:
     credit: "Periodico El AfroBogotano. Video identificado en la crónica de apertura."
 sources:
   - label: "Noticia histórica de apertura en el archivo de AFNEMO"
-    url: "/noticias/2026-10-02-memoria-museo/"
+    url: "/noticias/2024-06-18-memoria-museo/"
   - label: "Crónica original de El AfroBogotano, 18 de junio de 2024"
     url: "https://elafrobogotano.com.co/se-abrio-el-primer-museo-del-viernes-negro-en-colombia/"
 ---

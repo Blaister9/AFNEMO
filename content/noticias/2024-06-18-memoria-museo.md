@@ -1,7 +1,9 @@
 ---
 title: "La apertura del Museo del Viernes Negro: crónica de junio de 2024"
+# Publicación original documentada; no es la fecha exacta de apertura.
 date: "2024-06-18"
 source_date: "2024-06-18"
+# Revisión de esta síntesis durante el trabajo web; no pertenece a la crónica original.
 updated_at: "2026-10-02"
 category: "Memoria cultural"
 historical: true
@@ -17,9 +19,13 @@ El archivo institucional recoge la apertura del Museo del Viernes Negro en la lo
 
 La crónica de El AfroBogotano incluida en el documento describe un espacio transitorio y actividades culturales vinculadas a su apertura. Fue publicada el **18 de junio de 2024**. Esa es la fecha de la crónica, no una fecha exacta de inauguración confirmada por los materiales revisados.
 
+El pasaje sobre los actos solo menciona «el pasado viernes y sábado», sin consignar sus fechas de calendario. No se asigna un día exacto al evento.
+
 ## Las fechas de esta edición
 
 Esta síntesis de archivo fue revisada el **2 de octubre de 2026** a partir del documento institucional compilado el 19 de febrero de 2025. La fecha original de la crónica se conserva como referencia histórica.
+
+La actualización de 2026 identifica la revisión de esta síntesis para el sitio. El insumo no documenta una fecha de actualización de la noticia original.
 
 [Leer la ficha histórica del Museo del Viernes Negro](/experiencias/museo-viernes-negro/).
 
